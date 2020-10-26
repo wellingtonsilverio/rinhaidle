@@ -51,6 +51,7 @@ module.exports = (config) => {
 
 	async function createRooster(message, name) {
 		const userId = message.authorID;
+		console.log("userId", userId);
 
 		try {
 			const rooster = await Rooster.create({
@@ -63,7 +64,7 @@ module.exports = (config) => {
 			message.reply("Galo " + name + " criado com sucesso!");
 		} catch (ex) {
 			message.reply(
-				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado! "
+				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado!"
 			);
 			console.log("try error createRooster: ", ex);
 		}
