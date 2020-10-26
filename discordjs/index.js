@@ -88,21 +88,20 @@ module.exports = (config) => {
 
 		try {
 			const rooster = await Rooster.findOne({ discordId: userId, name: name });
-			console.log("rooster findOne", rooster);
 
 			if (rooster.training && rooster.training.init) {
-				message.reply(
-					"Galo " +
-						name +
-						" já está treinando, espere até " +
-						rooster.training.init
-				);
-				return;
+				if (dayjs().isBefore(rooster.training.init)) {
+					message.reply(
+						"Galo " +
+							name +
+							" já está treinando, espere até " +
+							rooster.training.init
+					);
+					return;
+				}
 			}
 
-			const finalDate = new Date(
-				new Date().getDate() + 60 * 60 * (type === 1 ? 20 : 30)
-			);
+			const finalDate = dayjs().set("minute", type === 1 ? 20 : 30);
 			await Rooster.updateOne(
 				{
 					discordId: userId,
@@ -112,7 +111,7 @@ module.exports = (config) => {
 					$set: {
 						training: {
 							type,
-							init: new Date(),
+							init: finalDate,
 						},
 					},
 					$inc: incQuery,
@@ -120,7 +119,10 @@ module.exports = (config) => {
 			);
 
 			message.reply(
-				"Galo " + name + " comecou a treinar, o treino termina em " + finalDate
+				"Galo " +
+					name +
+					" comecou a treinar, o treino termina as " +
+					finalDate.format("HH:mm")
 			);
 		} catch (ex) {
 			message.reply(

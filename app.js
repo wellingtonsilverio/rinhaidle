@@ -1,4 +1,6 @@
-"use strict";
+import "dayjs/locale/pt-br";
+
+("use strict");
 
 /*
  * Copyright (c) 2016 TopCoder, Inc. All rights reserved.
@@ -13,6 +15,8 @@ if (!process.env.NODE_ENV) {
 const cors = require("cors");
 const config = require("config");
 const express = require("express");
+const dayjs = require("dayjs");
+const localizedFormat = require("dayjs/plugin/localizedFormat");
 
 const app = express();
 const morgan = require("morgan");
@@ -21,6 +25,9 @@ const passport = require("passport");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const logger = require("./common/logger");
+
+dayjs.locale("pt-br");
+dayjs.extend(localizedFormat);
 
 mongoose.Promise = global.Promise;
 

@@ -18,6 +18,7 @@
 		"co": "^4.6.0",
 		"config": "^3.2.3",
 		"cors": "^2.8.5",
+		"dayjs": "^1.9.4",
 		"discord.js": "^12.4.1",
 		"express": "^4.17.1",
 		"get-parameter-names": "^0.3.0",
