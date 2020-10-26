@@ -14,9 +14,7 @@ module.exports = async (message, name, opponentId) => {
 			discordId: opponentId,
 		});
 
-		console.log("message", message);
 		const guild = message.channel.guild;
-		console.log("guild", guild);
 
 		let channelFight = await guild.channels.create(`fight-${rooster.name}`, {
 			type: "text",
@@ -53,23 +51,26 @@ module.exports = async (message, name, opponentId) => {
 		collector.on("collect", (message) => {
 			const roosterId = Number(message.content) - 1;
 			if (opponentRoosters[roosterId]) {
+				console.log("oponente setado");
 				const opponent = opponentRoosters[roosterId];
+				console.log("oponente setado", opponent);
 
 				channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
+				console.log("channel name alterado");
 
-				channelFight.bulkDelete(200).then(() => {
-					channelFight.send(`<@${userId}> e <@${opponentId}>: preparem-se!`);
-					channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
+				channelFight.send(`<@${userId}> e <@${opponentId}>: preparem-se!`);
+				channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
 
-					fight(
-						{ id: userId, rooster: rooster },
-						{ id: opponentId, rooster: opponent }
-					);
-				});
+				fight(
+					{ id: userId, rooster: rooster },
+					{ id: opponentId, rooster: opponent }
+				);
+				collector.stop();
 			}
 		});
 
 		const fight = async (opponent1, opponent2) => {
+			console.log("fight function");
 			const collector1 = new Discordjs.MessageCollector(
 				channelFight,
 				(m) => m.author.id === opponent1.id,
