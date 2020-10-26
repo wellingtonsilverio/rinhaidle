@@ -3,7 +3,7 @@
 const discordjs = require("discord.js");
 
 const client = new discordjs.Client();
-const RoosterService = require("../modules/Rooster/services/Rooster");
+const Rooster = require("../models/Rooster");
 
 module.exports = (config) => {
 	client.on("ready", () => {
@@ -53,7 +53,7 @@ module.exports = (config) => {
 		const userId = message.authorID;
 
 		try {
-			const rooster = await RoosterService.createRooster({
+			const rooster = await Rooster.create({
 				discordId: userId,
 				name: name,
 			});
