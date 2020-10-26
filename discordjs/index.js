@@ -10,9 +10,29 @@ module.exports = (config) => {
 	});
 
 	client.on("message", (msg) => {
-		msg.reply(JSON.stringify(msg));
-		if (msg.content === "ping") {
-			msg.reply("pong");
+		//msg.authorID
+		if (msg.content.startsWith("!r")) {
+			if (msg.content.split(" ").includes("help")) {
+				const embed = new discordjs.MessageEmbed()
+					.setTitle("Comandos")
+					.setDescription(
+						"Lista de comandos que podem ser executados pelo Rinha IDLE"
+					)
+					.setColor([255, 0, 255])
+					.addField(
+						"criar [nome]",
+						'Cria um novo galo, exemplo: "!r criar Poderoso"'
+					)
+					.addField(
+						"treinar [nome] forca",
+						'Treina o galo para adquirir mais força, exemplo: "!r treinar Poderoso forca"'
+					)
+					.addField(
+						"treinar [nome] defesa",
+						'Treina o galo para adquirir mais resistencia, exemplo: "!r treinar Poderoso defesa"'
+					);
+				msg.reply(embed);
+			}
 		}
 	});
 
