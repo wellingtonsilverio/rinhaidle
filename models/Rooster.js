@@ -13,6 +13,10 @@ const RoosterSchema = new Schema({
 	strength: { type: Number, required: false, default: 10 },
 	constitution: { type: Number, required: false, default: 10 },
 	stamina: { type: Number, required: false, default: 100 },
+	training: {
+		type: { type: Number, required: false },
+		init: { type: Date, required: false },
+	},
 });
 
 module.exports = mongoose.model("Rooster", RoosterSchema);
