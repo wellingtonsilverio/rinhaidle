@@ -85,30 +85,38 @@ module.exports = async (message, name, opponentId) => {
 			collector1.on("collect", (message) => {
 				if (message.content == "a") {
 					opponent2.rooster.constitution += -opponent1.rooster.strength;
+					channelFight.send(
+						`${opponent2.rooster.name} está com ${opponent2.rooster.constitution} de vida`
+					);
 				} else if (message.content == "d") {
-					opponent1.rooster.constitution +=
-						opponent1.rooster.constitution * 0.1;
+					const gain = opponent1.rooster.constitution * 0.1;
+					opponent1.rooster.constitution += gain;
+					channelFight.send(`${opponent1.rooster.name} ganhou ${gain} de vida`);
 				}
 
 				if (opponent2.rooster.constitution <= 0) {
 					collector2.stop();
 					collector1.stop();
-					channelFight.send(`<$${opponent1.id}> Venceu!`);
+					channelFight.send(`<@${opponent1.id}> Venceu!`);
 				}
 			});
 			collector2.on("collect", (message) => {
 				if (message.content == "a") {
 					opponent1.rooster.constitution += -opponent2.rooster.strength;
+					channelFight.send(
+						`${opponent1.rooster.name} está com ${opponent1.rooster.constitution} de vida`
+					);
 				}
 				if (message.content == "d") {
-					opponent2.rooster.constitution +=
-						opponent2.rooster.constitution * 0.1;
+					const gain = opponent2.rooster.constitution * 0.1;
+					opponent2.rooster.constitution += gain;
+					channelFight.send(`${opponent2.rooster.name} ganhou ${gain} de vida`);
 				}
 
 				if (opponent1.rooster.constitution <= 0) {
 					collector1.stop();
 					collector2.stop();
-					channelFight.send(`<$${opponent2.id}> Venceu!`);
+					channelFight.send(`<@${opponent2.id}> Venceu!`);
 				}
 			});
 		};
