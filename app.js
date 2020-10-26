@@ -90,6 +90,6 @@ client.on("message", (msg) => {
 	}
 });
 
-client.login("NzcwMzA3MjY3MjMxNzQ0MDUw.X5bqjA.8CFqqy6YATOHfiGGXlH03Phomc8");
+client.login(config.discordtoken);
 
 module.exports = app;
