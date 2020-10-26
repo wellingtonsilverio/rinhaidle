@@ -105,7 +105,7 @@ module.exports = (config) => {
 			);
 
 			if (rooster.training && rooster.training.init) {
-				if (dayjs().isAfter(dayjs(rooster.training.init))) {
+				if (dayjs().isBefore(dayjs(rooster.training.init))) {
 					message.reply(
 						"Galo " +
 							name +
