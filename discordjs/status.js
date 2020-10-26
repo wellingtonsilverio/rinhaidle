@@ -1,4 +1,4 @@
-const discordjs = require("discord.js");
+const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
 
 module.exports = async (message, name) => {
@@ -10,7 +10,7 @@ module.exports = async (message, name) => {
 			name: name,
 		});
 
-		const embed = new discordjs.MessageEmbed()
+		const embed = new Discordjs.MessageEmbed()
 			.setTitle(rooster.name)
 			.setColor([255, 100, 100])
 			.addField("Força", rooster.strength)

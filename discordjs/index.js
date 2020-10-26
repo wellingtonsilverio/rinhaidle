@@ -1,8 +1,8 @@
 "use strict";
 
-const discordjs = require("discord.js");
+const Discordjs = require("discord.js");
 
-const client = new discordjs.Client();
+const client = new Discordjs.Client();
 
 module.exports = (config) => {
 	client.on("ready", () => {
@@ -11,10 +11,11 @@ module.exports = (config) => {
 
 	client.on("message", (msg) => {
 		if (msg.content.startsWith("!r")) {
+			message.delete();
 			const commands = msg.content.split(" ");
 			switch (commands[1]) {
 				case "help" || "ajuda":
-					const embed = new discordjs.MessageEmbed()
+					const embed = new Discordjs.MessageEmbed()
 						.setTitle("Comandos")
 						.setDescription(
 							"Lista de comandos que podem ser executados pelo Rinha IDLE"
@@ -22,19 +23,23 @@ module.exports = (config) => {
 						.setColor([255, 0, 255])
 						.addField(
 							"criar [nome]",
-							'Cria um novo galo, exemplo: "!r criar Poderoso"'
+							'Cria um novo galo, Exemplo: "!r criar Poderoso"'
 						)
 						.addField(
 							"treinar [nome] forca",
-							'Treina o galo para adquirir mais força, exemplo: "!r treinar Poderoso forca"'
+							'Treina o galo para adquirir mais força, Exemplo: "!r treinar Poderoso forca"'
 						)
 						.addField(
 							"treinar [nome] defesa",
-							'Treina o galo para adquirir mais resistencia, exemplo: "!r treinar Poderoso defesa"'
+							'Treina o galo para adquirir mais resistencia, Exemplo: "!r treinar Poderoso defesa"'
 						)
 						.addField(
 							"status [nome]",
-							'Exibe todos dados do galo, exemplo: "!r status Poderoso"'
+							'Exibe todos dados do galo, Exemplo: "!r status Poderoso"'
+						)
+						.addField(
+							"lutar [@oponente]",
+							'Luta com outro Galo para ganhar moedas, Exemplo: "!r lutar @Lucas"'
 						);
 					msg.reply(embed);
 					break;
@@ -56,6 +61,10 @@ module.exports = (config) => {
 									: 0;
 							if (type !== 0) {
 								require("./training")(msg, commands[2], type);
+							} else {
+								msg.reply(
+									'Treine Força ou Defesa, outro treinamento ainda não é possivel para seu Galo, Exemplo: "!r treinar Poderoso forca"'
+								);
 							}
 						}
 					}
@@ -66,6 +75,14 @@ module.exports = (config) => {
 						require("./status")(msg, commands[2]);
 					}
 					break;
+
+				case "lutar":
+					if (commands[2] && commands[2] != "") {
+						console.log("commands[2]", commands[2]);
+						require("./fight")(msg, commands[2]);
+					}
+					break;
+
 				default:
 					msg.reply("Oi?");
 					break;
