@@ -13,8 +13,10 @@ if (!process.env.NODE_ENV) {
 const cors = require("cors");
 const config = require("config");
 const express = require("express");
+const discordjs = require("discord.js");
 
 const app = express();
+const client = new discordjs.Client();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const passport = require("passport");
@@ -77,5 +79,17 @@ app.listen(port, "0.0.0.0");
 logger.info(
 	`Express server listening on port ${port} in ${process.env.NODE_ENV} mode`
 );
+
+client.on("ready", () => {
+	console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on("message", (msg) => {
+	if (msg.content === "ping") {
+		msg.reply("pong");
+	}
+});
+
+client.login("NzcwMzA3MjY3MjMxNzQ0MDUw.X5bqjA.8CFqqy6YATOHfiGGXlH03Phomc8");
 
 module.exports = app;
