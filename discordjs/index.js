@@ -51,7 +51,7 @@ module.exports = (config) => {
 
 	async function createRooster(message, name) {
 		const userId = message.authorID;
-		console.log("userId", userId);
+		console.log("userId", message);
 
 		try {
 			const rooster = await Rooster.create({
