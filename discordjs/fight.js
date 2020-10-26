@@ -14,10 +14,13 @@ module.exports = async (message, name, opponentId) => {
 			discordId: opponentId,
 		});
 
+		console.log("message", message);
 		const guild = message.guild;
+		console.log("guild", guild);
+
 		let channelFight = await guild.createChannel(`fight-${rooster.name}`, {
 			type: "text",
-			// parent: '746161473843232798',
+			parent: "770394354337710091",
 			permissionOverwrites: [
 				{
 					allow: [
@@ -53,7 +56,7 @@ module.exports = async (message, name, opponentId) => {
 			}
 		});
 	} catch (ex) {
-		message.reply("Aconteceu um erro ao exibir os status do seu Galo!");
-		console.log("try error status: ", ex);
+		message.reply("Aconteceu um erro ao lutar!");
+		console.log("try error fight: ", ex);
 	}
 };
