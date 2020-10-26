@@ -50,16 +50,13 @@ module.exports = (config) => {
 	});
 
 	async function createRooster(message, name) {
-		const userId = message.authorID;
-		console.log("userId", message);
+		const userId = message.author.id;
 
 		try {
-			const rooster = await Rooster.create({
-				discordId: userId || "1",
+			await Rooster.create({
+				discordId: userId,
 				name: name,
 			});
-
-			console.log("rooster", rooster);
 
 			message.reply("Galo " + name + " criado com sucesso!");
 		} catch (ex) {
