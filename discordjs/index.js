@@ -3,6 +3,7 @@
 const discordjs = require("discord.js");
 
 const client = new discordjs.Client();
+const RoosterService = require("../modules/Rooster/services/Rooster");
 
 module.exports = (config) => {
 	client.on("ready", () => {
@@ -60,7 +61,8 @@ module.exports = (config) => {
 			message.reply("Galo " + name + " criado com sucesso!");
 		} catch (ex) {
 			message.reply(
-				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado!"
+				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado! " +
+					JSON.stringify(ex)
 			);
 		}
 	}
