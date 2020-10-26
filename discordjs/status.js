@@ -16,7 +16,7 @@ module.exports = async (message, name) => {
 			.addField("Força", rooster.strength)
 			.addField("Vida", rooster.constitution)
 			.addField("Stamina", rooster.stamina);
-		msg.reply(embed);
+		message.reply(embed);
 	} catch (ex) {
 		message.reply("Aconteceu um erro ao exibir os status do seu Galo!");
 		console.log("try error status: ", ex);
