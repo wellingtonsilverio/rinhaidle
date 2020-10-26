@@ -10,6 +10,7 @@ if (!process.env.NODE_ENV) {
 	process.env.NODE_ENV = "development";
 }
 
+require("dayjs/locale/pt-br");
 const cors = require("cors");
 const config = require("config");
 const express = require("express");

@@ -91,7 +91,7 @@ module.exports = (config) => {
 			const rooster = await Rooster.findOne({ discordId: userId, name: name });
 
 			if (rooster.training && rooster.training.init) {
-				if (dayjs().isBefore(rooster.training.init)) {
+				if (dayjs().isAfter(rooster.training.init)) {
 					message.reply(
 						"Galo " +
 							name +
