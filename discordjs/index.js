@@ -38,8 +38,8 @@ module.exports = (config) => {
 							'Exibe todos dados do galo, Exemplo: "!r status Poderoso"'
 						)
 						.addField(
-							"lutar [@oponente]",
-							'Luta com outro Galo para ganhar moedas, Exemplo: "!r lutar @Lucas"'
+							"lutar [nome] [@oponente]",
+							'Luta com outro Galo para ganhar moedas, Exemplo: "!r lutar Poderoso @Lucas"'
 						);
 					msg.reply(embed);
 					break;
@@ -77,9 +77,21 @@ module.exports = (config) => {
 					break;
 
 				case "lutar":
-					if (commands[2] && commands[2] != "") {
-						console.log("commands[2]", commands[2]);
-						require("./fight")(msg, commands[2]);
+					if (
+						commands[2] &&
+						commands[2] != "" &&
+						commands[3] &&
+						commands[3] != ""
+					) {
+						console.log(
+							"commands[3]",
+							commands[3].replace(/<@!/, "").replace(/>/, "")
+						);
+						require("./fight")(
+							msg,
+							commands[2],
+							commands[3].replace(/<@!/, "").replace(/>/, "")
+						);
 					}
 					break;
 

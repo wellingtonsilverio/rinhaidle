@@ -1,7 +1,7 @@
 const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
 
-module.exports = async (message, opponentId) => {
+module.exports = async (message, name, opponentId) => {
 	const userId = message.author.id;
 
 	try {
