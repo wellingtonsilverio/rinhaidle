@@ -55,7 +55,7 @@ module.exports = (config) => {
 
 		try {
 			const rooster = await Rooster.create({
-				discordId: userId,
+				discordId: userId || "1",
 				name: name,
 			});
 
