@@ -53,59 +53,64 @@ module.exports = async (message, name, opponentId) => {
 		collector.on("collect", (message) => {
 			const roosterId = Number(message.content) - 1;
 			if (opponentRoosters[roosterId]) {
-        const opponent = opponentRoosters[roosterId];
-        
-        channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
+				const opponent = opponentRoosters[roosterId];
 
-        await channelFight.bulkDelete(200);
+				channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
 
-        channelFight.send(`<@${userId}> e <@${opponentId}>: preparem-se!`);
-        channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
+				channelFight.bulkDelete(200).then(() => {
+					channelFight.send(`<@${userId}> e <@${opponentId}>: preparem-se!`);
+					channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
 
-        fight({id: userId, rooster: rooster}, {id: opponentId, rooster: opponent});
+					fight(
+						{ id: userId, rooster: rooster },
+						{ id: opponentId, rooster: opponent }
+					);
+				});
 			}
-    });
-    
-    const fight = async (opponent1, opponent2) => {
-      const collector1 = new Discordjs.MessageCollector(
-        channelFight,
-        (m) => m.author.id === opponent1.id,
-        { time: 1000 * 60 * 10 }
-      );
-      const collector2 = new Discordjs.MessageCollector(
-        channelFight,
-        (m) => m.author.id === opponent2.id,
-        { time: 1000 * 60 * 10 }
-      );
+		});
 
-      collector1.on("collect", (message) => {
-        if (message.content == "a") {
-          opponent2.rooster.constitution += -opponent1.rooster.strength;
-        } else if (message.content == "d") {
-          opponent1.rooster.constitution += opponent1.rooster.constitution * 0.1;
-        }
+		const fight = async (opponent1, opponent2) => {
+			const collector1 = new Discordjs.MessageCollector(
+				channelFight,
+				(m) => m.author.id === opponent1.id,
+				{ time: 1000 * 60 * 10 }
+			);
+			const collector2 = new Discordjs.MessageCollector(
+				channelFight,
+				(m) => m.author.id === opponent2.id,
+				{ time: 1000 * 60 * 10 }
+			);
 
-        if (opponent2.rooster.constitution <= 0) {
-          collector2.stop();
-          collector1.stop();
-          channelFight.send(`<$${opponent1.id}> Venceu!`);
-        }
-      });
-      collector2.on("collect", (message) => {
-        if (message.content == "a") {
-          opponent1.rooster.constitution += -opponent2.rooster.strength;
-        }
-        if (message.content == "d") {
-          opponent2.rooster.constitution += opponent2.rooster.constitution * 0.1;
-        }
+			collector1.on("collect", (message) => {
+				if (message.content == "a") {
+					opponent2.rooster.constitution += -opponent1.rooster.strength;
+				} else if (message.content == "d") {
+					opponent1.rooster.constitution +=
+						opponent1.rooster.constitution * 0.1;
+				}
 
-        if (opponent1.rooster.constitution <= 0) {
-          collector1.stop();
-          collector2.stop();
-          channelFight.send(`<$${opponent2.id}> Venceu!`);
-        }
-      });
-    };
+				if (opponent2.rooster.constitution <= 0) {
+					collector2.stop();
+					collector1.stop();
+					channelFight.send(`<$${opponent1.id}> Venceu!`);
+				}
+			});
+			collector2.on("collect", (message) => {
+				if (message.content == "a") {
+					opponent1.rooster.constitution += -opponent2.rooster.strength;
+				}
+				if (message.content == "d") {
+					opponent2.rooster.constitution +=
+						opponent2.rooster.constitution * 0.1;
+				}
+
+				if (opponent1.rooster.constitution <= 0) {
+					collector1.stop();
+					collector2.stop();
+					channelFight.send(`<$${opponent2.id}> Venceu!`);
+				}
+			});
+		};
 	} catch (ex) {
 		message.reply("Aconteceu um erro ao lutar!");
 		console.log("try error fight: ", ex);
