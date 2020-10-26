@@ -90,7 +90,7 @@ module.exports = (config) => {
 			const rooster = await Rooster.findOne({ discordId: userId, name: name });
 			console.log("rooster findOne", rooster);
 
-			if (rooster.training) {
+			if (rooster.training && rooster.training.init) {
 				message.reply(
 					"Galo " +
 						name +

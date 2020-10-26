@@ -29,6 +29,7 @@ mongoose
 	.then(() => console.log("successfully connected"))
 	.catch((err) => console.log(err));
 
+app.use(express.static("public"));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
