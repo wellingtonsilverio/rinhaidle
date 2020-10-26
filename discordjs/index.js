@@ -58,12 +58,14 @@ module.exports = (config) => {
 				name: name,
 			});
 
+			console.log("rooster", rooster);
+
 			message.reply("Galo " + name + " criado com sucesso!");
 		} catch (ex) {
 			message.reply(
-				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado! " +
-					JSON.stringify(ex)
+				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado! "
 			);
+			console.log("try error createRooster: ", ex);
 		}
 	}
 
