@@ -42,6 +42,18 @@ module.exports = (config) => {
 					}
 					break;
 
+				case "treinar":
+					if (commands[2] && commands[2] != "") {
+						if (commands[3] && commands[3] != "") {
+							const type =
+								commands[3] === "forca" ? 1 : commands[3] === "defesa" ? 2 : 0;
+							if (type !== 0) {
+								training(msg, commands[2], type);
+							}
+						}
+					}
+					break;
+
 				default:
 					msg.reply("Oi?");
 					break;
@@ -62,6 +74,56 @@ module.exports = (config) => {
 		} catch (ex) {
 			message.reply(
 				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado!"
+			);
+			console.log("try error createRooster: ", ex);
+		}
+	}
+
+	async function training(message, name, type) {
+		const userId = message.author.id;
+
+		const trainingName = { 1: "strength", 2: "constitution" };
+		const incQuery = {};
+		incQuery[trainingName[type]] = type === 1 ? 10 : 100;
+
+		try {
+			const rooster = await Rooster.findOne({ discordId: userId, name: name });
+
+			if (rooster.training) {
+				message.reply(
+					"Galo " +
+						name +
+						" já está treinando, espere até " +
+						rooster.training.init
+				);
+				return;
+			}
+
+			const finalDate = new Date(
+				new Date().getDate() + 60 * 60 * (type === 1 ? 20 : 30)
+			);
+			await Rooster.updateOne(
+				{
+					discordId: userId,
+					name: name,
+				},
+				{
+					$set: {
+						training: {
+							type,
+							init: new Date(),
+						},
+					},
+					$inc: incQuery,
+				}
+			);
+
+			message.reply(
+				"Galo " + name + " comecou a treinar, o treino termina em " + finalDate
+			);
+		} catch (ex) {
+			message.reply(
+				"Aconteceu um erro ao treinar o Galo, pode ser que o nome já é utilizado!"
 			);
 			console.log("try error createRooster: ", ex);
 		}
