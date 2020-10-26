@@ -15,10 +15,10 @@ module.exports = async (message, name, opponentId) => {
 		});
 
 		console.log("message", message);
-		const guild = message.guild;
+		const guild = message.channel.guild;
 		console.log("guild", guild);
 
-		let channelFight = await guild.createChannel(`fight-${rooster.name}`, {
+		let channelFight = await guild.channels.create(`fight-${rooster.name}`, {
 			type: "text",
 			parent: "770394354337710091",
 			permissionOverwrites: [
@@ -37,6 +37,7 @@ module.exports = async (message, name, opponentId) => {
 					id: guild.id,
 				},
 			],
+			reason: `Luta`,
 		});
 
 		channelFight.send(`<@${opponentId}> Escolha seu Galo: `);
