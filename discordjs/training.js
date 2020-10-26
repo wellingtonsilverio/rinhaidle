@@ -1,55 +1,55 @@
 const dayjs = require("dayjs");
 const Rooster = require("../models/Rooster");
 
-module.exports = async () => (message, name, type) => {
-  const userId = message.author.id;
+module.exports = async (message, name, type) => {
+	const userId = message.author.id;
 
-  const trainingName = { 1: "strength", 2: "constitution" };
-  const incQuery = {};
-  incQuery[trainingName[type]] = type === 1 ? 10 : 100;
+	const trainingName = { 1: "strength", 2: "constitution" };
+	const incQuery = {};
+	incQuery[trainingName[type]] = type === 1 ? 10 : 100;
 
-  try {
-    const rooster = await Rooster.findOne({ discordId: userId, name: name });
+	try {
+		const rooster = await Rooster.findOne({ discordId: userId, name: name });
 
-    if (rooster.training && rooster.training.init) {
-      if (dayjs().isBefore(dayjs(rooster.training.init))) {
-        message.reply(
-          "Galo " +
-            name +
-            " já está treinando, espere até " +
-            dayjs(rooster.training.init).format("HH:mm")
-        );
-        return;
-      }
-    }
+		if (rooster.training && rooster.training.init) {
+			if (dayjs().isBefore(dayjs(rooster.training.init))) {
+				message.reply(
+					"Galo " +
+						name +
+						" já está treinando, espere até " +
+						dayjs(rooster.training.init).format("HH:mm")
+				);
+				return;
+			}
+		}
 
-    const finalDate = dayjs().add(type === 1 ? 20 : 30, "minute");
-    await Rooster.updateOne(
-      {
-        discordId: userId,
-        name: name,
-      },
-      {
-        $set: {
-          training: {
-            type,
-            init: finalDate,
-          },
-        },
-        $inc: incQuery,
-      }
-    );
+		const finalDate = dayjs().add(type === 1 ? 20 : 30, "minute");
+		await Rooster.updateOne(
+			{
+				discordId: userId,
+				name: name,
+			},
+			{
+				$set: {
+					training: {
+						type,
+						init: finalDate,
+					},
+				},
+				$inc: incQuery,
+			}
+		);
 
-    message.reply(
-      "Galo " +
-        name +
-        " comecou a treinar, o treino termina as " +
-        finalDate.format("HH:mm")
-    );
-  } catch (ex) {
-    message.reply(
-      "Aconteceu um erro ao treinar o Galo, pode ser que o nome esteja errado ou você não é dono desse galo!"
-    );
-    console.log("try error createRooster: ", ex);
-  }
+		message.reply(
+			"Galo " +
+				name +
+				" comecou a treinar, o treino termina as " +
+				finalDate.format("HH:mm")
+		);
+	} catch (ex) {
+		message.reply(
+			"Aconteceu um erro ao treinar o Galo, pode ser que o nome esteja errado ou você não é dono desse galo!"
+		);
+		console.log("try error createRooster: ", ex);
+	}
 };
