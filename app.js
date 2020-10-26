@@ -1,6 +1,4 @@
-import "dayjs/locale/pt-br";
-
-("use strict");
+"use strict";
 
 /*
  * Copyright (c) 2016 TopCoder, Inc. All rights reserved.
