@@ -110,13 +110,13 @@ module.exports = (config) => {
 						"Galo " +
 							name +
 							" já está treinando, espere até " +
-							rooster.training.init
+							dayjs(rooster.training.init).format("HH:mm")
 					);
 					return;
 				}
 			}
 
-			const finalDate = dayjs().set("minute", type === 1 ? 20 : 30);
+			const finalDate = dayjs().add(type === 1 ? 20 : 30, "minute");
 			await Rooster.updateOne(
 				{
 					discordId: userId,
