@@ -1,10 +1,8 @@
 "use strict";
 
 const discordjs = require("discord.js");
-const dayjs = require("dayjs");
 
 const client = new discordjs.Client();
-const Rooster = require("../models/Rooster");
 
 module.exports = (config) => {
 	client.on("ready", () => {
@@ -33,13 +31,17 @@ module.exports = (config) => {
 						.addField(
 							"treinar [nome] defesa",
 							'Treina o galo para adquirir mais resistencia, exemplo: "!r treinar Poderoso defesa"'
+						)
+						.addField(
+							"status [nome]",
+							'Exibe todos dados do galo, exemplo: "!r status Poderoso"'
 						);
 					msg.reply(embed);
 					break;
 
 				case "criar":
 					if (commands[2] && commands[2] != "") {
-						createRooster(msg, commands[2]);
+						require("./create")(msg, commands[2]);
 					}
 					break;
 
@@ -53,99 +55,23 @@ module.exports = (config) => {
 									? 2
 									: 0;
 							if (type !== 0) {
-								training(msg, commands[2], type);
+								require("./training")(msg, commands[2], type);
 							}
 						}
 					}
 					break;
 
+				case "status":
+					if (commands[2] && commands[2] != "") {
+						require("./status")(msg, commands[2]);
+					}
+					break;
 				default:
 					msg.reply("Oi?");
 					break;
 			}
 		}
 	});
-
-	async function createRooster(message, name) {
-		const userId = message.author.id;
-
-		try {
-			await Rooster.create({
-				discordId: userId,
-				name: name,
-			});
-
-			message.reply("Galo " + name + " criado com sucesso!");
-		} catch (ex) {
-			message.reply(
-				"Aconteceu um erro ao criar o Galo, pode ser que o nome já é utilizado!"
-			);
-			console.log("try error createRooster: ", ex);
-		}
-	}
-
-	async function training(message, name, type) {
-		const userId = message.author.id;
-
-		const trainingName = { 1: "strength", 2: "constitution" };
-		const incQuery = {};
-		incQuery[trainingName[type]] = type === 1 ? 10 : 100;
-
-		try {
-			const rooster = await Rooster.findOne({ discordId: userId, name: name });
-
-			console.log("training init ", rooster.training.init);
-			console.log(
-				"dayjs().isAfter(dayjs(rooster.training.init))",
-				dayjs().isAfter(dayjs(rooster.training.init))
-			);
-			console.log(
-				"dayjs().isBefore(dayjs(rooster.training.init))",
-				dayjs().isBefore(dayjs(rooster.training.init))
-			);
-
-			if (rooster.training && rooster.training.init) {
-				if (dayjs().isBefore(dayjs(rooster.training.init))) {
-					message.reply(
-						"Galo " +
-							name +
-							" já está treinando, espere até " +
-							dayjs(rooster.training.init).format("HH:mm")
-					);
-					return;
-				}
-			}
-
-			const finalDate = dayjs().add(type === 1 ? 20 : 30, "minute");
-			await Rooster.updateOne(
-				{
-					discordId: userId,
-					name: name,
-				},
-				{
-					$set: {
-						training: {
-							type,
-							init: finalDate,
-						},
-					},
-					$inc: incQuery,
-				}
-			);
-
-			message.reply(
-				"Galo " +
-					name +
-					" comecou a treinar, o treino termina as " +
-					finalDate.format("HH:mm")
-			);
-		} catch (ex) {
-			message.reply(
-				"Aconteceu um erro ao treinar o Galo, pode ser que o nome esteja errado ou você não é dono desse galo!"
-			);
-			console.log("try error createRooster: ", ex);
-		}
-	}
 
 	client.login(config.discordtoken);
 };
