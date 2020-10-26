@@ -47,7 +47,11 @@ module.exports = (config) => {
 					if (commands[2] && commands[2] != "") {
 						if (commands[3] && commands[3] != "") {
 							const type =
-								commands[3] === "forca" ? 1 : commands[3] === "defesa" ? 2 : 0;
+								commands[3] === "forca" || commands[3] === "f"
+									? 1
+									: commands[3] === "defesa" || commands[3] === "d"
+									? 2
+									: 0;
 							if (type !== 0) {
 								training(msg, commands[2], type);
 							}
@@ -90,8 +94,18 @@ module.exports = (config) => {
 		try {
 			const rooster = await Rooster.findOne({ discordId: userId, name: name });
 
+			console.log("training init ", rooster.training.init);
+			console.log(
+				"dayjs().isAfter(dayjs(rooster.training.init))",
+				dayjs().isAfter(dayjs(rooster.training.init))
+			);
+			console.log(
+				"dayjs().isBefore(dayjs(rooster.training.init))",
+				dayjs().isBefore(dayjs(rooster.training.init))
+			);
+
 			if (rooster.training && rooster.training.init) {
-				if (dayjs().isAfter(rooster.training.init)) {
+				if (dayjs().isAfter(dayjs(rooster.training.init))) {
 					message.reply(
 						"Galo " +
 							name +
