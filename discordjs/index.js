@@ -88,6 +88,7 @@ module.exports = (config) => {
 
 		try {
 			const rooster = await Rooster.findOne({ discordId: userId, name: name });
+			console.log("rooster findOne", rooster);
 
 			if (rooster.training) {
 				message.reply(
@@ -123,7 +124,7 @@ module.exports = (config) => {
 			);
 		} catch (ex) {
 			message.reply(
-				"Aconteceu um erro ao treinar o Galo, pode ser que o nome já é utilizado!"
+				"Aconteceu um erro ao treinar o Galo, pode ser que o nome esteja errado ou você não é dono desse galo!"
 			);
 			console.log("try error createRooster: ", ex);
 		}
