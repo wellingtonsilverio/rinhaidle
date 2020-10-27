@@ -14,6 +14,7 @@ module.exports = async (message, name, opponentId) => {
 			discordId: opponentId,
 		});
 
+		console.log("message", message);
 		message.send(`debbug 1`);
 
 		const guild = message.channel.guild;
