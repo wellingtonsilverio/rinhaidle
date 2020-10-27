@@ -19,7 +19,7 @@ module.exports = async (message, name, opponentId) => {
 
 		let channelFight = await guild.channels.create(`fight-${rooster.name}`, {
 			type: "text",
-			parent: "770394354337710091",
+			// parent: "770394354337710091",
 			// rateLimitPerUser: 1,
 			permissionOverwrites: [
 				{
