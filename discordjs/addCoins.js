@@ -7,7 +7,10 @@ module.exports = async (userId) => {
 		});
 
 		if (user && user.discordId) {
+			if (!user.coins) user.coins = 0;
+
 			user.coins += 100;
+
 			user.save();
 		} else {
 			await User.create({

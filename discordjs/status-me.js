@@ -17,7 +17,7 @@ module.exports = async (message) => {
 		const embed = new Discordjs.MessageEmbed()
 			.setTitle("Perfil")
 			.setColor([221, 190, 169])
-			.addField("Dinheiro", user.coins)
+			.addField("Dinheiro", user && user.coins ? user.coins : 0)
 			.addField(
 				"Galos",
 				JSON.stringify(roosters.map((rooster) => rooster.name))
