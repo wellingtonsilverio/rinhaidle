@@ -18,7 +18,7 @@ module.exports = async (message, name, opponentId) => {
 		const guild = message.channel.guild;
 
 		let channelCategory = guild.channels.cache.find(
-			(channel) => channel.name === "LUTAS"
+			(channel) => channel.name === "LUTAS" && channel.type === "category"
 		);
 
 		if (!channelCategory) {
