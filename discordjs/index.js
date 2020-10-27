@@ -12,10 +12,6 @@ module.exports = (config) => {
 	});
 
 	client.on("message", (msg) => {
-		console.log("msg.channel", msg.channel);
-		console.log("msg.channel.guild", msg.channel.guild);
-		console.log("msg.channel.guild.channels", msg.channel.guild.channels);
-
 		if (msg.content.startsWith("!r")) {
 			// msg.delete();
 			const commands = msg.content.split(" ");

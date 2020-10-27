@@ -9,35 +9,64 @@ module.exports = async (message, name, opponentId) => {
 		const rooster = await Rooster.findOne({
 			discordId: userId,
 			name: name,
-		});
+		}).lean();
 
 		const opponentRoosters = await Rooster.find({
 			discordId: opponentId,
-		});
+		}).lean();
 
 		const guild = message.channel.guild;
 
+		let channelCategory = guild.channels.find(
+			(channel) => channel.name === "LUTAS"
+		);
+
+		if (!channelCategory) {
+			try {
+				channelCategory = await guild.channels.create("LUTAS", {
+					type: "category",
+					permissionOverwrites: [
+						{
+							allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
+							id: message.author.id,
+						},
+						{
+							allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
+							id: opponentId,
+						},
+						{
+							allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
+							id: guild.id,
+						},
+					],
+				});
+			} catch (error) {
+				channel.send(
+					`Não tenho permissão para criar Categorias e Salas de texto, por favor atualize-me!`
+				);
+
+				return;
+			}
+		}
+
 		let channelFight = await guild.channels.create(`fight-${rooster.name}`, {
 			type: "text",
-			// parent: "770394354337710091",
+			parent: channelCategory.id,
 			// rateLimitPerUser: 1,
 			permissionOverwrites: [
 				{
-					allow: [
-						"VIEW_CHANNEL",
-						"READ_MESSAGE_HISTORY",
-						"EMBED_LINKS",
-						"ATTACH_FILES",
-						"SEND_MESSAGES",
-					],
+					allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
 					id: message.author.id,
 				},
 				{
-					allow: "VIEW_CHANNEL",
+					allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
+					id: opponentId,
+				},
+				{
+					allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"],
 					id: guild.id,
 				},
 			],
-			reason: `Luta`,
 		});
 
 		channelFight.send(`<@${opponentId}> Escolha seu Galo: `);

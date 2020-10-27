@@ -8,11 +8,11 @@ module.exports = async (message) => {
 	try {
 		const user = await User.findOne({
 			discordId: userId,
-		});
+		}).lean();
 
 		const roosters = await Rooster.find({
 			discordId: userId,
-		});
+		}).lean();
 
 		const embed = new Discordjs.MessageEmbed()
 			.setTitle("Perfil")

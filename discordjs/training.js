@@ -9,7 +9,10 @@ module.exports = async (message, name, type) => {
 	incQuery[trainingName[type]] = type === 1 ? 10 : 100;
 
 	try {
-		const rooster = await Rooster.findOne({ discordId: userId, name: name });
+		const rooster = await Rooster.findOne({
+			discordId: userId,
+			name: name,
+		}).lean();
 
 		if (rooster.training && rooster.training.init) {
 			if (dayjs().isBefore(dayjs(rooster.training.init))) {

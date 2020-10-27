@@ -8,7 +8,7 @@ module.exports = async (message, name) => {
 		const rooster = await Rooster.findOne({
 			discordId: userId,
 			name: name,
-		});
+		}).lean();
 
 		const embed = new Discordjs.MessageEmbed()
 			.setTitle(rooster.name)
