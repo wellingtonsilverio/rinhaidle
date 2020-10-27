@@ -78,13 +78,13 @@ module.exports = async (message, name, opponentId) => {
 				{ time: 1000 * 60 * 10 }
 			);
 
-			collector1.on("collect", (message) => {
-				if (message.content == "a") {
+			collector1.on("collect", (_message) => {
+				if (_message.content == "a") {
 					opponent2.rooster.constitution += -opponent1.rooster.strength;
 					channelFight.send(
 						`${opponent2.rooster.name} está com ${opponent2.rooster.constitution} de vida`
 					);
-				} else if (message.content == "d") {
+				} else if (_message.content == "d") {
 					const gain = opponent1.rooster.constitution * 0.1;
 					opponent1.rooster.constitution += gain;
 					channelFight.send(`${opponent1.rooster.name} ganhou ${gain} de vida`);
@@ -98,14 +98,14 @@ module.exports = async (message, name, opponentId) => {
 					channelFight.delete();
 				}
 			});
-			collector2.on("collect", (message) => {
-				if (message.content == "a") {
+			collector2.on("collect", (_message) => {
+				if (_message.content == "a") {
 					opponent1.rooster.constitution += -opponent2.rooster.strength;
 					channelFight.send(
 						`${opponent1.rooster.name} está com ${opponent1.rooster.constitution} de vida`
 					);
 				}
-				if (message.content == "d") {
+				if (_message.content == "d") {
 					const gain = opponent2.rooster.constitution * 0.1;
 					opponent2.rooster.constitution += gain;
 					channelFight.send(`${opponent2.rooster.name} ganhou ${gain} de vida`);
