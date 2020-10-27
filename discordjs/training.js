@@ -39,6 +39,7 @@ module.exports = async (message, name, type) => {
 				$inc: incQuery,
 			}
 		);
+		require("./wastingEnergy")(userId, name, 20);
 
 		message.reply(
 			"Galo " +

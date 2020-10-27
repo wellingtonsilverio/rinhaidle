@@ -70,6 +70,9 @@ module.exports = async (message, name, opponentId) => {
 		});
 
 		const fight = async (opponent1, opponent2) => {
+			require("./wastingEnergy")(opponent1.id, opponent1.rooster.name, 10);
+			require("./wastingEnergy")(opponent2.id, opponent2.rooster.name, 10);
+
 			const collector1 = new Discordjs.MessageCollector(
 				channelFight,
 				(m) => m.author.id === opponent1.id,

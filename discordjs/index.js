@@ -35,7 +35,7 @@ module.exports = (config) => {
 						)
 						.addField(
 							"status",
-							'Exibe todos seus galo e quantidade de dinheiro, Exemplo: "!r status"'
+							'Exibe todos seus galos e quantidade de dinheiro, Exemplo: "!r status"'
 						)
 						.addField(
 							"status [nome]",
