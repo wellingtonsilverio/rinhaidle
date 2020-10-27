@@ -51,12 +51,9 @@ module.exports = async (message, name, opponentId) => {
 		collector.on("collect", (message) => {
 			const roosterId = Number(message.content) - 1;
 			if (opponentRoosters[roosterId]) {
-				console.log("oponente setado");
 				const opponent = opponentRoosters[roosterId];
-				console.log("oponente setado", opponent);
 
 				channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
-				console.log("channel name alterado");
 
 				channelFight.send(`<@${userId}> e <@${opponentId}>: preparem-se!`);
 				channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
@@ -70,7 +67,6 @@ module.exports = async (message, name, opponentId) => {
 		});
 
 		const fight = async (opponent1, opponent2) => {
-			console.log("fight function");
 			const collector1 = new Discordjs.MessageCollector(
 				channelFight,
 				(m) => m.author.id === opponent1.id,
@@ -97,7 +93,9 @@ module.exports = async (message, name, opponentId) => {
 				if (opponent2.rooster.constitution <= 0) {
 					collector2.stop();
 					collector1.stop();
-					channelFight.send(`<@${opponent1.id}> Venceu!`);
+					message.send(`<@${opponent1.id}> Venceu!`);
+					require("./addCoins")(opponent1.id);
+					channelFight.delete();
 				}
 			});
 			collector2.on("collect", (message) => {
@@ -116,7 +114,9 @@ module.exports = async (message, name, opponentId) => {
 				if (opponent1.rooster.constitution <= 0) {
 					collector1.stop();
 					collector2.stop();
-					channelFight.send(`<@${opponent2.id}> Venceu!`);
+					message.send(`<@${opponent2.id}> Venceu!`);
+					require("./addCoins")(opponent2.id);
+					channelFight.delete();
 				}
 			});
 		};
