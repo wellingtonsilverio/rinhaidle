@@ -11,7 +11,7 @@ module.exports = (config) => {
 
 	client.on("message", (msg) => {
 		if (msg.content.startsWith("!r")) {
-			msg.delete();
+			// msg.delete();
 			const commands = msg.content.split(" ");
 			switch (commands[1]) {
 				case "help" || "ajuda":
