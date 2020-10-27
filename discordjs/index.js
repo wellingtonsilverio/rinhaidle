@@ -34,6 +34,10 @@ module.exports = (config) => {
 							'Treina o galo para adquirir mais resistencia, Exemplo: "!r treinar Poderoso defesa"'
 						)
 						.addField(
+							"status",
+							'Exibe todos seus galo e quantidade de dinheiro, Exemplo: "!r status"'
+						)
+						.addField(
 							"status [nome]",
 							'Exibe todos dados do galo, Exemplo: "!r status Poderoso"'
 						)
@@ -73,6 +77,8 @@ module.exports = (config) => {
 				case "status":
 					if (commands[2] && commands[2] != "") {
 						require("./status")(msg, commands[2]);
+					} else {
+						require("./status-me")(msg);
 					}
 					break;
 
