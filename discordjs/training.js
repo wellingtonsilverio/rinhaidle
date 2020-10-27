@@ -54,6 +54,6 @@ module.exports = async (message, name, type) => {
 		message.reply(
 			"Aconteceu um erro ao treinar o Galo, pode ser que o nome esteja errado ou você não é dono desse galo!"
 		);
-		console.log("try error createRooster: ", ex);
+		console.log("try error training: ", ex);
 	}
 };

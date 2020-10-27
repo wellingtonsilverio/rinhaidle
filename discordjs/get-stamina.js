@@ -9,6 +9,6 @@ module.exports = (userId, name) => {
 
 		return rooster.stamina;
 	} catch (ex) {
-		console.log("try error recharge: ", ex);
+		console.log("try error get-stamina: ", ex);
 	}
 };

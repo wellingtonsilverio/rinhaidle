@@ -25,6 +25,6 @@ module.exports = async (message) => {
 		message.reply(embed);
 	} catch (ex) {
 		message.reply("Aconteceu um erro ao exibir os status do seu Galo!");
-		console.log("try error status: ", ex);
+		console.log("try error status-me: ", ex);
 	}
 };
