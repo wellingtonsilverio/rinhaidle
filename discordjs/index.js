@@ -83,10 +83,6 @@ module.exports = (config) => {
 						commands[3] &&
 						commands[3] != ""
 					) {
-						console.log(
-							"commands[3]",
-							commands[3].replace(/<@!/, "").replace(/>/, "")
-						);
 						require("./fight")(
 							msg,
 							commands[2],

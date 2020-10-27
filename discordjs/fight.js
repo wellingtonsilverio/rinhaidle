@@ -60,13 +60,14 @@ module.exports = async (message, name, opponentId) => {
 
 				fight(
 					{ id: userId, rooster: rooster },
-					{ id: opponentId, rooster: opponent }
+					{ id: opponentId, rooster: opponent },
+					message
 				);
 				collector.stop();
 			}
 		});
 
-		const fight = async (opponent1, opponent2) => {
+		const fight = async (opponent1, opponent2, message) => {
 			const collector1 = new Discordjs.MessageCollector(
 				channelFight,
 				(m) => m.author.id === opponent1.id,
@@ -93,7 +94,7 @@ module.exports = async (message, name, opponentId) => {
 				if (opponent2.rooster.constitution <= 0) {
 					collector2.stop();
 					collector1.stop();
-					message.send(`<@${opponent1.id}> Venceu!`);
+					message.reply(`<@${opponent1.id}> Venceu!`);
 					require("./addCoins")(opponent1.id);
 					channelFight.delete();
 				}
@@ -114,7 +115,7 @@ module.exports = async (message, name, opponentId) => {
 				if (opponent1.rooster.constitution <= 0) {
 					collector1.stop();
 					collector2.stop();
-					message.send(`<@${opponent2.id}> Venceu!`);
+					message.reply(`<@${opponent2.id}> Venceu!`);
 					require("./addCoins")(opponent2.id);
 					channelFight.delete();
 				}
