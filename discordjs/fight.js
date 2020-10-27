@@ -1,7 +1,7 @@
 const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
 
-module.exports = async (message, name, opponentId) => {
+module.exports = async (message, name, opponentId, channel) => {
 	const userId = message.author.id;
 
 	try {
@@ -16,7 +16,7 @@ module.exports = async (message, name, opponentId) => {
 
 		console.log("message", message);
 		console.log("message.channel", message.channel);
-		message.channel.send(`debbug 1`);
+		channel.send(`debbug 1`);
 
 		const guild = message.channel.guild;
 
@@ -44,7 +44,7 @@ module.exports = async (message, name, opponentId) => {
 
 		channelFight.send(`<@${opponentId}> Escolha seu Galo: `);
 
-		message.channel.send(`debbug 2`);
+		channel.send(`debbug 2`);
 		opponentRoosters.map((opponentRooster, index) => {
 			channelFight.send(`${index + 1}: ${opponentRooster.name}`);
 		});
@@ -55,7 +55,7 @@ module.exports = async (message, name, opponentId) => {
 			{ time: 1000 * 60 * 5 }
 		);
 		collector.on("collect", (message) => {
-			message.channel.send(`debbug 3`);
+			channel.send(`debbug 3`);
 			const roosterId = Number(message.content) - 1;
 			if (opponentRoosters[roosterId]) {
 				const opponent = opponentRoosters[roosterId];
@@ -67,15 +67,14 @@ module.exports = async (message, name, opponentId) => {
 
 				fight(
 					{ id: userId, rooster: rooster },
-					{ id: opponentId, rooster: opponent },
-					message
+					{ id: opponentId, rooster: opponent }
 				);
 				collector.stop();
 			}
 		});
 
-		const fight = async (opponent1, opponent2, message) => {
-			message.channel.send(`debbug 4`);
+		const fight = async (opponent1, opponent2) => {
+			channel.send(`debbug 4`);
 			const collector1 = new Discordjs.MessageCollector(
 				channelFight,
 				(m) => m.author.id === opponent1.id,
@@ -103,7 +102,7 @@ module.exports = async (message, name, opponentId) => {
 					collector2.stop();
 					collector1.stop();
 					require("./addCoins")(opponent1.id);
-					message.channel.send(`<@${opponent1.id}> Venceu!`);
+					channel.send(`<@${opponent1.id}> Venceu!`);
 					channelFight.delete();
 				}
 			});
@@ -124,7 +123,7 @@ module.exports = async (message, name, opponentId) => {
 					collector1.stop();
 					collector2.stop();
 					require("./addCoins")(opponent2.id);
-					message.channel.send(`<@${opponent2.id}> Venceu!`);
+					channel.send(`<@${opponent2.id}> Venceu!`);
 					channelFight.delete();
 				}
 			});
