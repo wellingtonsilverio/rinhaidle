@@ -6,9 +6,6 @@ module.exports = async (userId) => {
 			discordId: userId,
 		});
 
-		console.log("user", user);
-		console.log("user.discordId", user.discordId);
-
 		if (user && user.discordId) {
 			user.coins += 100;
 			user.save();

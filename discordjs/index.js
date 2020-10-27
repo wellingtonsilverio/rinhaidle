@@ -58,9 +58,13 @@ module.exports = (config) => {
 					if (commands[2] && commands[2] != "") {
 						if (commands[3] && commands[3] != "") {
 							const type =
-								commands[3] === "forca" || commands[3] === "f"
+								commands[3] === "forca" ||
+								commands[3] === "ataque" ||
+								commands[3] === "f"
 									? 1
-									: commands[3] === "defesa" || commands[3] === "d"
+									: commands[3] === "defesa" ||
+									  commands[3] === "vida" ||
+									  commands[3] === "d"
 									? 2
 									: 0;
 							if (type !== 0) {
