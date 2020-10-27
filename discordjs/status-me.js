@@ -16,7 +16,7 @@ module.exports = async (message) => {
 
 		const embed = new Discordjs.MessageEmbed()
 			.setTitle("Perfil")
-			.setColor([10, 10, 255])
+			.setColor([221, 190, 169])
 			.addField("Dinheiro", user.coins)
 			.addField(
 				"Galos",

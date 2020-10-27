@@ -7,6 +7,8 @@ const client = new Discordjs.Client();
 module.exports = (config) => {
 	client.on("ready", () => {
 		console.log(`Logged in as ${client.user.tag}!`);
+
+		require("./recharge")();
 	});
 
 	client.on("message", (msg) => {
@@ -20,7 +22,7 @@ module.exports = (config) => {
 						.setDescription(
 							"Lista de comandos que podem ser executados pelo Rinha IDLE"
 						)
-						.setColor([255, 0, 255])
+						.setColor([203, 153, 126])
 						.addField(
 							"criar [nome]",
 							'Cria um novo galo, Exemplo: "!r criar Poderoso"'

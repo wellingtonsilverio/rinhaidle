@@ -12,7 +12,7 @@ module.exports = async (message, name) => {
 
 		const embed = new Discordjs.MessageEmbed()
 			.setTitle(rooster.name)
-			.setColor([255, 100, 100])
+			.setColor([165, 165, 141])
 			.addField("Força", rooster.strength)
 			.addField("Vida", rooster.constitution)
 			.addField("Stamina", rooster.stamina);
