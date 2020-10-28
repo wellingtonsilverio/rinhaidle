@@ -30,6 +30,14 @@ module.exports = (message) => {
 		.addField(
 			"lutar [nome] [@oponente]",
 			'Luta com outro Galo para ganhar moedas, Exemplo: "!r lutar Poderoso @Lucas"'
+		)
+		.addField(
+			"comprar",
+			'Lista os produtos disponiveis para comprar, Exemplo: "!r comprar"'
+		)
+		.addField(
+			"comprar [nome]",
+			'Compra o produto, Exemplo: "!r comprar bico-madeira"'
 		);
 	message.reply(embed);
 };

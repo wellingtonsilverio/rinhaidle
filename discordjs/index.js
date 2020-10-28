@@ -73,6 +73,14 @@ module.exports = (config) => {
 					}
 					break;
 
+				case "comprar":
+					if (commands[2] && commands[2] != "") {
+						require("./buy-product")(msg, commands[2]);
+					} else {
+						require("./products")(msg);
+					}
+					break;
+
 				default:
 					msg.reply("Oi?");
 					break;
