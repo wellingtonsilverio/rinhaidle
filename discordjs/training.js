@@ -11,7 +11,7 @@ module.exports = async (message, name, type) => {
 	try {
 		console.log("userId", userId);
 		console.log("name", name);
-		const stamina = require("./get-stamina")(userId, name);
+		const stamina = await require("./get-stamina")(userId, name);
 		console.log("stamina", stamina);
 
 		if (stamina < 20) {
