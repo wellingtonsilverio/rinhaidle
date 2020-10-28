@@ -1,10 +1,10 @@
 const Rooster = require("../models/Rooster");
 
-module.exports = (userId, name) => {
+module.exports = async (userId, name) => {
 	try {
 		const rooster = await Rooster.findOne({
 			discordId: userId,
-				name: name,
+			name: name,
 		}).lean();
 
 		return rooster.stamina;
