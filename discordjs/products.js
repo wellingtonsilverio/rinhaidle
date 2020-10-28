@@ -47,7 +47,7 @@ module.exports = async (message) => {
 				name: "Bico",
 				ext: "bico",
 				bonus: {
-					strength: 0.06,
+					strength: 0.006,
 				},
 				price: 600,
 			},
@@ -55,7 +55,7 @@ module.exports = async (message) => {
 				name: "Armadura",
 				ext: "armadura",
 				bonus: {
-					constitution: 0.06,
+					constitution: 0.006,
 				},
 				price: 600,
 			},
@@ -63,7 +63,7 @@ module.exports = async (message) => {
 				name: "Calça",
 				ext: "calca",
 				bonus: {
-					constitution: 0.04,
+					constitution: 0.004,
 				},
 				price: 400,
 			},
@@ -71,8 +71,8 @@ module.exports = async (message) => {
 				name: "Bota",
 				ext: "bota",
 				bonus: {
-					constitution: 0.02,
-					strength: 0.03,
+					constitution: 0.002,
+					strength: 0.003,
 				},
 				price: 500,
 			},
@@ -80,7 +80,7 @@ module.exports = async (message) => {
 				name: "Chapeu",
 				ext: "chapeu",
 				bonus: {
-					constitution: 0.02,
+					constitution: 0.002,
 				},
 				price: 200,
 			},
@@ -88,7 +88,7 @@ module.exports = async (message) => {
 				name: "Óculos",
 				ext: "oculos",
 				bonus: {
-					constitution: 0.03,
+					constitution: 0.003,
 				},
 				price: 300,
 			},
@@ -96,8 +96,8 @@ module.exports = async (message) => {
 				name: "Rabo",
 				ext: "rabo",
 				bonus: {
-					constitution: 0.03,
-					strength: 0.03,
+					constitution: 0.003,
+					strength: 0.003,
 				},
 				price: 600,
 			},
@@ -105,7 +105,7 @@ module.exports = async (message) => {
 				name: "Esporas",
 				ext: "esporas",
 				bonus: {
-					strength: 0.03,
+					strength: 0.003,
 				},
 				price: 300,
 			},
@@ -113,8 +113,8 @@ module.exports = async (message) => {
 				name: "Crista",
 				ext: "crista",
 				bonus: {
-					constitution: 0.01,
-					strength: 0.01,
+					constitution: 0.001,
+					strength: 0.001,
 				},
 				price: 200,
 			},
@@ -133,7 +133,7 @@ module.exports = async (message) => {
 			{
 				name: "Aluminio",
 				ext: "madeira",
-				multiplier: 15,
+				multiplier: 25,
 			},
 			{
 				name: "Ferro",
