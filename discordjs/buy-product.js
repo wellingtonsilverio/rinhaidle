@@ -1,1 +1,1 @@
-module.exports = () => {};
+module.exports = async (message, name, product) => {};

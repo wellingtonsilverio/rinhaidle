@@ -74,8 +74,13 @@ module.exports = (config) => {
 					break;
 
 				case "comprar":
-					if (commands[2] && commands[2] != "") {
-						require("./buy-product")(msg, commands[2]);
+					if (
+						commands[2] &&
+						commands[2] != "" &&
+						commands[3] &&
+						commands[3] != ""
+					) {
+						require("./buy-product")(msg, commands[2], commands[3]);
 					} else {
 						require("./products")(msg);
 					}

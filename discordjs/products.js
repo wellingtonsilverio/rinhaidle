@@ -30,6 +30,12 @@ module.exports = async (message) => {
 				price: 350,
 			},
 			{
+				name: "Whey",
+				ext: "whey",
+				bonus: 50,
+				price: 500,
+			},
+			{
 				name: "Red Bull",
 				ext: "redbull",
 				bonus: 80,
@@ -122,7 +128,12 @@ module.exports = async (message) => {
 			{
 				name: "Madeira",
 				ext: "madeira",
-				multiplier: 10,
+				multiplier: 5,
+			},
+			{
+				name: "Aluminio",
+				ext: "madeira",
+				multiplier: 15,
 			},
 			{
 				name: "Ferro",
@@ -142,6 +153,7 @@ module.exports = async (message) => {
 		.setDescription("Use para restaurar a stamina")
 		.setColor([203, 153, 126])
 		.addFields(
+			{ name: "\u200B", value: "\u200B" },
 			...products.foods.map((food) => ({
 				name: food.ext,
 				value: `Stamina: +${food.bonus}\nPreço: ${food.price}`,
@@ -156,18 +168,19 @@ module.exports = async (message) => {
 			.setDescription("Use para equipar um Galo")
 			.setColor([203, 153, 126])
 			.addFields(
+				{ name: "\u200B", value: "\u200B" },
 				...products.equipments.map((equipment) => ({
 					name: `${equipment.ext}-${material.ext}`,
 					value: `${
 						equipment.bonus.strength > 0
 							? "Força: +" +
-							  equipment.bonus.strength * material.multiplier +
+							  equipment.bonus.strength * material.multiplier * 100 +
 							  "%\n"
 							: ""
 					}${
 						equipment.bonus.constitution > 0
 							? "Defesa: +" +
-							  equipment.bonus.constitution * material.multiplier +
+							  equipment.bonus.constitution * material.multiplier * 100 +
 							  "%\n"
 							: ""
 					}Preço: ${equipment.price * material.multiplier}`,

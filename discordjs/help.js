@@ -8,15 +8,15 @@ module.exports = (message) => {
 		)
 		.setColor([203, 153, 126])
 		.addField(
-			"chocar [nome]",
+			"chocar [nome do galo]",
 			'Cria um novo galo, Exemplo: "!r criar Poderoso"'
 		)
 		.addField(
-			"treinar [nome] forca",
+			"treinar [nome do galo] forca",
 			'Treina o galo para adquirir mais força, Exemplo: "!r treinar Poderoso forca"'
 		)
 		.addField(
-			"treinar [nome] defesa",
+			"treinar [nome do galo] defesa",
 			'Treina o galo para adquirir mais resistencia, Exemplo: "!r treinar Poderoso defesa"'
 		)
 		.addField(
@@ -24,11 +24,11 @@ module.exports = (message) => {
 			'Exibe todos seus galos e quantidade de dinheiro, Exemplo: "!r status"'
 		)
 		.addField(
-			"status [nome]",
+			"status [nome do galo]",
 			'Exibe todos dados do galo, Exemplo: "!r status Poderoso"'
 		)
 		.addField(
-			"lutar [nome] [@oponente]",
+			"lutar [nome do galo] [@oponente]",
 			'Luta com outro Galo para ganhar moedas, Exemplo: "!r lutar Poderoso @Lucas"'
 		)
 		.addField(
@@ -36,8 +36,8 @@ module.exports = (message) => {
 			'Lista os produtos disponiveis para comprar, Exemplo: "!r comprar"'
 		)
 		.addField(
-			"comprar [nome]",
-			'Compra o produto, Exemplo: "!r comprar bico-madeira"'
+			"comprar [nome do galo] [nome do produto]",
+			'Compra o produto, Exemplo: "!r comprar Poderoso bico-madeira"'
 		);
 	message.reply(embed);
 };
