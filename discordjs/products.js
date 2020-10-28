@@ -153,22 +153,22 @@ module.exports = async (message) => {
 				name: food.ext,
 				value: `Stamina: +${food.bonus}  Preço: ${food.price}`,
 				inline: true,
-			}))
-			// { name: "\u200B", value: "\u200B" }
+			})),
+			{ name: "\u200B", value: "\u200B" }
 		);
-	// products.materials.map((material) => {
-	// 	embed.addField("Equipamentos", material.name);
-	// 	embed.addFields(
-	// 		products.equipments.map((equipment) => ({
-	// 			name: `${equipment.ext}-${material.ext}`,
-	// 			value: `Força: +${
-	// 				equipment.bonus.strength * material.multiplier
-	// 			}%  Defesa: +${
-	// 				equipment.bonus.constitution * material.multiplier
-	// 			}%  Preço: ${equipment.price * material.multiplier}`,
-	// 			inline: true,
-	// 		}))
-	// 	);
-	// });
+	products.materials.map((material) => {
+		embed.addField("Equipamentos", material.name);
+		embed.addFields(
+			...products.equipments.map((equipment) => ({
+				name: `${equipment.ext}-${material.ext}`,
+				value: `Força: +${
+					equipment.bonus.strength * material.multiplier
+				}%  Defesa: +${
+					equipment.bonus.constitution * material.multiplier
+				}%  Preço: ${equipment.price * material.multiplier}`,
+				inline: true,
+			}))
+		);
+	});
 	message.reply(embed);
 };
