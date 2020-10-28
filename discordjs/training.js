@@ -9,6 +9,18 @@ module.exports = async (message, name, type) => {
 	incQuery[trainingName[type]] = type === 1 ? 10 : 100;
 
 	try {
+		const stamina = await require("./get-stamina")(userId, name);
+
+		if (stamina < 20) {
+			message.reply("Seu Galo está cansado, espere um pouco para treina-lo");
+			return;
+		}
+	} catch (error) {
+		message.reply("Erro ao verificar a stamina do Galo");
+		return;
+	}
+
+	try {
 		const rooster = await Rooster.findOne({
 			discordId: userId,
 			name: name,
