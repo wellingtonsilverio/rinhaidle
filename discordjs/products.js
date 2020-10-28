@@ -1,5 +1,4 @@
 const Discordjs = require("discord.js");
-const User = require("../models/User");
 
 module.exports = async (message) => {
 	const userId = message.author.id;
@@ -137,38 +136,44 @@ module.exports = async (message) => {
 			},
 		],
 	};
-	const user = await User.findOne({
-		discordId: userId,
-	});
 
-	const embed = new Discordjs.MessageEmbed()
-		.setTitle("Comprar")
-		.setDescription("Lista de todos produtos disponiveis para compra")
+	const foods = new Discordjs.MessageEmbed()
+		.setTitle("Comidas")
+		.setDescription("Use para restaurar a stamina")
 		.setColor([203, 153, 126])
 		.addFields(
-			{ name: "Dinheiro", value: `${user.coins}` },
-			{ name: "\u200B", value: "\u200B" },
-			{ name: "Comidas", value: "\u200B" },
 			...products.foods.map((food) => ({
 				name: food.ext,
-				value: `Stamina: +${food.bonus}  Preço: ${food.price}`,
-				inline: true,
-			})),
-			{ name: "\u200B", value: "\u200B" }
-		);
-	products.materials.map((material) => {
-		embed.addField("Equipamentos", material.name);
-		embed.addFields(
-			...products.equipments.map((equipment) => ({
-				name: `${equipment.ext}-${material.ext}`,
-				value: `Força: +${
-					equipment.bonus.strength * material.multiplier
-				}%  Defesa: +${
-					equipment.bonus.constitution * material.multiplier
-				}%  Preço: ${equipment.price * material.multiplier}`,
+				value: `Stamina: +${food.bonus}\nPreço: ${food.price}`,
 				inline: true,
 			}))
 		);
+	message.reply(foods);
+
+	products.materials.map((material) => {
+		const embed = new Discordjs.MessageEmbed()
+			.setTitle("Equipamentos - " + material.name)
+			.setDescription("Use para equipar um Galo")
+			.setColor([203, 153, 126])
+			.addFields(
+				...products.equipments.map((equipment) => ({
+					name: `${equipment.ext}-${material.ext}`,
+					value: `${
+						equipment.bonus.strength > 0
+							? "Força: +" +
+							  equipment.bonus.strength * material.multiplier +
+							  "%\n"
+							: ""
+					}${
+						equipment.bonus.constitution > 0
+							? "Defesa: +" +
+							  equipment.bonus.constitution * material.multiplier +
+							  "%\n"
+							: ""
+					}Preço: ${equipment.price * material.multiplier}`,
+					inline: true,
+				}))
+			);
+		message.reply(embed);
 	});
-	message.reply(embed);
 };
