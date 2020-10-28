@@ -9,10 +9,7 @@ module.exports = async (message, name, type) => {
 	incQuery[trainingName[type]] = type === 1 ? 10 : 100;
 
 	try {
-		console.log("userId", userId);
-		console.log("name", name);
 		const stamina = await require("./get-stamina")(userId, name);
-		console.log("stamina", stamina);
 
 		if (stamina < 20) {
 			message.reply("Seu Galo está cansado, espere um pouco para treina-lo");
