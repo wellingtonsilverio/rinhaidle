@@ -147,13 +147,13 @@ module.exports = async (message) => {
 		.setColor([203, 153, 126])
 		.addFields(
 			{ name: "Dinheiro", value: `${user.coins}` },
-			{ name: "\u200B", value: "\u200B" }
-			// { name: "Comidas", value: "" },
-			// ...products.foods.map((food) => ({
-			// 	name: food.ext,
-			// 	value: `Stamina: +${food.bonus}  Preço: ${food.price}`,
-			// 	inline: true,
-			// })),
+			{ name: "\u200B", value: "\u200B" },
+			{ name: "Comidas", value: "\u200B" },
+			...products.foods.map((food) => ({
+				name: food.ext,
+				value: `Stamina: +${food.bonus}  Preço: ${food.price}`,
+				inline: true,
+			}))
 			// { name: "\u200B", value: "\u200B" }
 		);
 	// products.materials.map((material) => {
