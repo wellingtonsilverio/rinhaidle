@@ -10,12 +10,12 @@ module.exports = async (message, name, opponentId) => {
 
 		if (stamina < 10) {
 			channel.send(
-				`<@${userId}>Seu Galo está cansado, espere um pouco para lutar com outro galo`
+				`<@${userId}>, Seu Galo está cansado, espere um pouco para lutar com outro galo`
 			);
 			return;
 		}
 	} catch (error) {
-		channel.send(`<@${userId}> Erro ao verificar a stamina do Galo`);
+		channel.send(`<@${userId}>, Erro ao verificar a stamina do Galo`);
 		return;
 	}
 
@@ -100,13 +100,13 @@ module.exports = async (message, name, opponentId) => {
 				const opponent = opponentRoosters[roosterId];
 
 				try {
-					const staminaOpponent = require("./get-stamina")(
+					const staminaOpponent = await require("./get-stamina")(
 						opponent.discordId,
 						opponent.name
 					);
 
 					if (staminaOpponent < 10) {
-						channelFight.send("Este Galo está casando, tente outro!");
+						channelFight.send(`<@${opponentId}>, Este Galo está casando, tente outro!`);
 					} else {
 						channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
 
@@ -120,7 +120,7 @@ module.exports = async (message, name, opponentId) => {
 						collector.stop();
 					}
 				} catch (error) {
-					channel.send(`<@${userId}> Erro ao verificar a stamina do Galo`);
+					channel.send(`<@${userId}>, Erro ao verificar a stamina do Galo`);
 					return;
 				}
 			}
