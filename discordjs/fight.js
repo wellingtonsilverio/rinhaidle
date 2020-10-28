@@ -6,7 +6,7 @@ module.exports = async (message, name, opponentId) => {
 	const userId = message.author.id;
 
 	try {
-		const stamina = require("./get-stamina")(userId, name);
+		const stamina = await require("./get-stamina")(userId, name);
 
 		if (stamina < 10) {
 			channel.send(
