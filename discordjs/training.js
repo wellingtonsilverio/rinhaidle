@@ -32,7 +32,10 @@ module.exports = async (message, name, type) => {
 					"Galo " +
 						name +
 						" já está treinando, espere até " +
-						dayjs(rooster.training.init).subtract(3, "hour").format("HH:mm")
+						dayjs(rooster.training.init)
+							.subtract(3, "hour")
+							.add(1, "minute")
+							.format("HH:mm")
 				);
 				return;
 			}
@@ -60,7 +63,7 @@ module.exports = async (message, name, type) => {
 			"Galo " +
 				name +
 				" comecou a treinar, o treino termina as " +
-				finalDate.subtract(3, "hour").format("HH:mm")
+				finalDate.subtract(3, "hour").add(1, "minute").format("HH:mm")
 		);
 	} catch (ex) {
 		message.reply(
