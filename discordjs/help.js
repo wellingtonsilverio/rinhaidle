@@ -9,7 +9,7 @@ module.exports = (message) => {
 		.setColor([203, 153, 126])
 		.addField(
 			"chocar [nome do galo]",
-			'Cria um novo galo, Exemplo: "!r criar Poderoso"'
+			'Cria um novo galo, Exemplo: "!r chocar Poderoso"'
 		)
 		.addField(
 			"treinar [nome do galo] forca",
@@ -21,7 +21,7 @@ module.exports = (message) => {
 		)
 		.addField(
 			"status",
-			'Exibe todos seus galos e quantidade de dinheiro, Exemplo: "!r status"'
+			'Exibe todos seus galos e quantidade de moedas, Exemplo: "!r status"'
 		)
 		.addField(
 			"status [nome do galo]",
