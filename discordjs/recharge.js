@@ -8,7 +8,7 @@ module.exports = () => {
 			});
 
 			roosters.map(async (rooster) => {
-				rooster.stamina += 5;
+				rooster.stamina += 3;
 
 				if (rooster.stamina > 100) rooster.stamina = 100;
 
