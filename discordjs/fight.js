@@ -89,102 +89,111 @@ module.exports = async (message, name, opponentId) => {
 			channelFight.send(`${index + 1}: ${opponentRooster.name}`);
 		});
 
-		const collector = new Discordjs.MessageCollector(
+		const collectMessage = async (channel, userId) => {
+			return new Promise((resolve) => {
+				const collector = new Discordjs.MessageCollector(
+					channel,
+					(m) => m.author.id === userId,
+					{ time: 1000 * 60 * 1 }
+				);
+				collector.on("collect", (message) => {
+					resolve(message);
+				});
+			});
+		};
+
+		const { content: roosterOponentId } = await collectMessage(
 			channelFight,
-			(m) => m.author.id === opponentId,
-			{ time: 1000 * 60 * 5 }
+			opponentId
 		);
-		collector.on("collect", (message) => {
-			const roosterId = Number(message.content) - 1;
-			if (opponentRoosters[roosterId]) {
-				const opponent = opponentRoosters[roosterId];
 
-				try {
-					require("./get-stamina")(opponent.discordId, opponent.name).then(
-						(staminaOpponent) => {
-							if (staminaOpponent < 10) {
-								channelFight.send(
-									`<@${opponentId}>, Este Galo está casando, tente outro!`
-								);
-							} else {
-								channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
+		const roosterId = Number(roosterOponentId) - 1;
+		if (opponentRoosters[roosterId]) {
+			const opponent = opponentRoosters[roosterId];
 
-								channelFight.send(
-									`<@${userId}> e <@${opponentId}>: preparem-se!`
-								);
-								channelFight.send(`envie 'a' para atarcar e 'd' para defender`);
+			try {
+				require("./get-stamina")(opponent.discordId, opponent.name).then(
+					(staminaOpponent) => {
+						if (staminaOpponent < 10) {
+							channelFight.send(
+								`<@${opponentId}>, Este Galo está casando, tente outro!`
+							);
+						} else {
+							channelFight.setName(`fight-${rooster.name}-${opponent.name}`);
 
-								fight(
-									{ id: userId, rooster: rooster },
-									{ id: opponentId, rooster: opponent }
-								);
-								collector.stop();
-							}
+							channelFight.send(
+								`<@${userId}> e <@${opponentId}>: preparem-se!`
+							);
+							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
+
+							fight(
+								{ id: userId, rooster: rooster },
+								{ id: opponentId, rooster: opponent }
+							);
+							collector.stop();
 						}
-					);
-				} catch (error) {
-					channel.send(`<@${userId}>, Erro ao verificar a stamina do Galo`);
-					return;
-				}
+					}
+				);
+			} catch (error) {
+				channel.send(`<@${userId}>, Erro ao verificar a stamina do Galo`);
+				return;
 			}
-		});
+		}
 
 		const fight = async (opponent1, opponent2) => {
 			require("./wastingEnergy")(opponent1.id, opponent1.rooster.name, 10);
 			require("./wastingEnergy")(opponent2.id, opponent2.rooster.name, 10);
 
-			const collector1 = new Discordjs.MessageCollector(
-				channelFight,
-				(m) => m.author.id === opponent1.id,
-				{ time: 1000 * 60 * 10 }
-			);
-			const collector2 = new Discordjs.MessageCollector(
-				channelFight,
-				(m) => m.author.id === opponent2.id,
-				{ time: 1000 * 60 * 10 }
-			);
+			while (true) {
+				channelFight.send(`<@${opponent1.id}> é seu turno:`);
+				const messageOponent1 = await collectMessage(
+					channelFight,
+					opponent1.id
+				);
 
-			collector1.on("collect", (_message) => {
-				if (_message.content == "a") {
+				if (messageOponent1.content == "a") {
 					opponent2.rooster.constitution += -opponent1.rooster.strength;
 					channelFight.send(
 						`${opponent2.rooster.name} está com ${opponent2.rooster.constitution} de vida`
 					);
-				} else if (_message.content == "d") {
-					const gain = opponent1.rooster.constitution * 0.1;
+				} else if (messageOponent1.content == "d") {
+					const gain = opponent1.rooster.constitution * 0.01;
 					opponent1.rooster.constitution += gain;
 					channelFight.send(`${opponent1.rooster.name} ganhou ${gain} de vida`);
 				}
 
 				if (opponent2.rooster.constitution <= 0) {
-					collector2.stop();
-					collector1.stop();
 					require("./addCoins")(opponent1.id);
 					channel.send(`<@${opponent1.id}> Venceu!`);
 					channelFight.delete();
+					return;
 				}
-			});
-			collector2.on("collect", (_message) => {
-				if (_message.content == "a") {
+
+				channelFight.send(`<@${opponent2.id}> é seu turno:`);
+				const messageOponent2 = await collectMessage(
+					channelFight,
+					opponent2.id
+				);
+
+				if (messageOponent2.content == "a") {
 					opponent1.rooster.constitution += -opponent2.rooster.strength;
 					channelFight.send(
 						`${opponent1.rooster.name} está com ${opponent1.rooster.constitution} de vida`
 					);
 				}
-				if (_message.content == "d") {
-					const gain = opponent2.rooster.constitution * 0.1;
+				if (messageOponent2.content == "d") {
+					const gain = opponent2.rooster.constitution * 0.01;
 					opponent2.rooster.constitution += gain;
 					channelFight.send(`${opponent2.rooster.name} ganhou ${gain} de vida`);
 				}
 
 				if (opponent1.rooster.constitution <= 0) {
-					collector1.stop();
-					collector2.stop();
 					require("./addCoins")(opponent2.id);
 					channel.send(`<@${opponent2.id}> Venceu!`);
 					channelFight.delete();
+					return;
 				}
-			});
+			}
 		};
 	} catch (ex) {
 		channel.send(`<@${userId}> Aconteceu um erro ao lutar!`);
