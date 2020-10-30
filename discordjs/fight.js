@@ -132,7 +132,6 @@ module.exports = async (message, name, opponentId) => {
 								{ id: userId, rooster: rooster },
 								{ id: opponentId, rooster: opponent }
 							);
-							collector.stop();
 						}
 					}
 				);
@@ -146,55 +145,40 @@ module.exports = async (message, name, opponentId) => {
 			require("./wastingEnergy")(opponent1.id, opponent1.rooster.name, 10);
 			require("./wastingEnergy")(opponent2.id, opponent2.rooster.name, 10);
 
-			while (true) {
-				channelFight.send(`<@${opponent1.id}> é seu turno:`);
+			let i = 1;
+			const oponents = [opponent1, opponent2];
+			while (i !== 0) {
+				channelFight.send(`<@${oponents[(i + 1) % 2].id}> é seu turno:`);
 				const messageOponent1 = await collectMessage(
 					channelFight,
-					opponent1.id
+					oponents[(i + 1) % 2].id
 				);
 
 				if (messageOponent1.content == "a") {
-					opponent2.rooster.constitution += -opponent1.rooster.strength;
+					oponents[i % 2].rooster.constitution += -oponents[(i + 1) % 2].rooster
+						.strength;
 					channelFight.send(
-						`${opponent2.rooster.name} está com ${opponent2.rooster.constitution} de vida`
+						`${oponents[i % 2].rooster.name} está com ${
+							oponents[i % 2].rooster.constitution
+						} de vida`
 					);
 				} else if (messageOponent1.content == "d") {
-					const gain = opponent1.rooster.constitution * 0.01;
-					opponent1.rooster.constitution += gain;
-					channelFight.send(`${opponent1.rooster.name} ganhou ${gain} de vida`);
-				}
-
-				if (opponent2.rooster.constitution <= 0) {
-					require("./addCoins")(opponent1.id);
-					channel.send(`<@${opponent1.id}> Venceu!`);
-					channelFight.delete();
-					return;
-				}
-
-				channelFight.send(`<@${opponent2.id}> é seu turno:`);
-				const messageOponent2 = await collectMessage(
-					channelFight,
-					opponent2.id
-				);
-
-				if (messageOponent2.content == "a") {
-					opponent1.rooster.constitution += -opponent2.rooster.strength;
+					const gain = oponents[(i + 1) % 2].rooster.constitution * 0.01;
+					oponents[(i + 1) % 2].rooster.constitution += gain;
 					channelFight.send(
-						`${opponent1.rooster.name} está com ${opponent1.rooster.constitution} de vida`
+						`${oponents[(i + 1) % 2].rooster.name} ganhou ${gain} de vida`
 					);
 				}
-				if (messageOponent2.content == "d") {
-					const gain = opponent2.rooster.constitution * 0.01;
-					opponent2.rooster.constitution += gain;
-					channelFight.send(`${opponent2.rooster.name} ganhou ${gain} de vida`);
-				}
 
-				if (opponent1.rooster.constitution <= 0) {
-					require("./addCoins")(opponent2.id);
-					channel.send(`<@${opponent2.id}> Venceu!`);
+				if (oponents[i % 2].rooster.constitution <= 0) {
+					require("./addCoins")(oponents[(i + 1) % 2].id);
+					channel.send(`<@${oponents[(i + 1) % 2].id}> Venceu!`);
 					channelFight.delete();
+					i = 0;
 					return;
 				}
+
+				i++;
 			}
 		};
 	} catch (ex) {
