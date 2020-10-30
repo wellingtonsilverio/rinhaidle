@@ -98,6 +98,8 @@ module.exports = async (message, name, opponentId) => {
 				);
 				collector.on("collect", (message) => {
 					resolve(message);
+					collector.stop();
+					return;
 				});
 			});
 		};
@@ -124,7 +126,7 @@ module.exports = async (message, name, opponentId) => {
 							channelFight.send(
 								`<@${userId}> e <@${opponentId}>: preparem-se!`
 							);
-							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
+							channelFight.send(`envie 'a' para atacar e 'd' para defender\n`);
 
 							fight(
 								{ id: userId, rooster: rooster },
