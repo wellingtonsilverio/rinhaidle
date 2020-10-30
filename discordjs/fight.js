@@ -126,7 +126,7 @@ module.exports = async (message, name, opponentId) => {
 							channelFight.send(
 								`<@${userId}> e <@${opponentId}>: preparem-se!`
 							);
-							channelFight.send(`envie 'a' para atacar e 'd' para defender\n`);
+							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
 
 							fight(
 								{ id: userId, rooster: rooster },
@@ -145,7 +145,7 @@ module.exports = async (message, name, opponentId) => {
 			require("./wastingEnergy")(opponent1.id, opponent1.rooster.name, 10);
 			require("./wastingEnergy")(opponent2.id, opponent2.rooster.name, 10);
 
-			let i = 1;
+			let i = Math.random() > 0.5 ? 1 : 2;
 			const oponents = [opponent1, opponent2];
 			while (i !== 0) {
 				channelFight.send(`<@${oponents[(i + 1) % 2].id}> é seu turno:`);
