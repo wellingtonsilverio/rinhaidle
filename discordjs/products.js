@@ -177,9 +177,9 @@ module.exports = async (message) => {
 	});
 
 	products.materials.map(async (material) => {
-		const material = await Material.findOne({ ext: material.ext });
+		const _material = await Material.findOne({ ext: material.ext });
 
-		if (!material) {
+		if (!_material) {
 			await Material.create({ ...material });
 		}
 	});
