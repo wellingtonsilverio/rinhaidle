@@ -1,44 +1,56 @@
 const Discordjs = require("discord.js");
+const Product = require("../models/Product");
+const Material = require("../models/Material");
 
 module.exports = async (message) => {
-	const userId = message.author.id;
-
 	const products = {
 		foods: [
 			{
 				name: "Quirela",
 				ext: "quirela",
-				bonus: 5,
+				bonus: {
+					stamina: 5,
+				},
 				price: 100,
 			},
 			{
 				name: "Milho",
 				ext: "milho",
-				bonus: 10,
+				bonus: {
+					stamina: 10,
+				},
 				price: 150,
 			},
 			{
 				name: "Arroz",
 				ext: "arroz",
-				bonus: 25,
+				bonus: {
+					stamina: 25,
+				},
 				price: 300,
 			},
 			{
 				name: "Pipoca",
 				ext: "pipoca",
-				bonus: 30,
+				bonus: {
+					stamina: 30,
+				},
 				price: 350,
 			},
 			{
 				name: "Whey",
 				ext: "whey",
-				bonus: 50,
+				bonus: {
+					stamina: 50,
+				},
 				price: 500,
 			},
 			{
 				name: "Red Bull",
 				ext: "redbull",
-				bonus: 80,
+				bonus: {
+					stamina: 80,
+				},
 				price: 600,
 			},
 		],
@@ -147,6 +159,30 @@ module.exports = async (message) => {
 			},
 		],
 	};
+
+	products.foods.map(async (food) => {
+		const product = await Product.findOne({ ext: food.ext, type: "food" });
+
+		if (!product) {
+			await Product.create({ ...food, type: "food" });
+		}
+	});
+
+	products.equipments.map(async (equipment) => {
+		const product = await Product.findOne({ ext: equipment.ext });
+
+		if (!product) {
+			await Product.create({ ...equipment, type: "equipment" });
+		}
+	});
+
+	products.materials.map(async (material) => {
+		const material = await Material.findOne({ ext: material.ext });
+
+		if (!material) {
+			await Material.create({ ...material });
+		}
+	});
 
 	const foods = new Discordjs.MessageEmbed()
 		.setTitle("Comidas")
