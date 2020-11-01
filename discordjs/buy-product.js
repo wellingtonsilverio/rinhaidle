@@ -14,6 +14,8 @@ module.exports = async (message, name) => {
 		});
 
 		await user.save();
+
+		message.reply("Compra feita com sucesso!");
 	};
 
 	try {
