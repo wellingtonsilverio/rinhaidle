@@ -1,8 +1,20 @@
 const Product = require("../models/Product");
 const Material = require("../models/Material");
+const User = require("../models/User");
 
 module.exports = async (message, name) => {
-	const buy = () => {};
+	const userId = message.author.id;
+
+	const buy = async (_product, _material) => {
+		const user = await User.findOne({ discordId: userId });
+
+		user.inventory.push({
+			_product,
+			...(_material ? { _material } : {}),
+		});
+
+		await user.save();
+	};
 
 	try {
 		const [productName, productMaterial] = name.split("-");
@@ -16,12 +28,12 @@ module.exports = async (message, name) => {
 				}).lean();
 
 				if (material) {
-					buy();
+					buy(product._id, material._id);
 					return;
 				}
 			}
 
-			buy();
+			buy(product._id, undefined);
 			return;
 		}
 	} catch (ex) {

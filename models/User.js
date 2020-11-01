@@ -13,7 +13,8 @@ const UserSchema = new Schema({
 	inventory: {
 		type: [
 			{
-				product: { type: Types.ObjectId, ref: "Product" },
+				_product: { type: Types.ObjectId, ref: "Product" },
+				_material: { type: Types.ObjectId, ref: "Material" },
 			},
 		],
 		default: [],
