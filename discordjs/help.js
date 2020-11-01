@@ -36,8 +36,8 @@ module.exports = (message) => {
 			'Lista os produtos disponiveis para comprar, Exemplo: "!r comprar"'
 		)
 		.addField(
-			"comprar [nome do galo] [nome do produto]",
-			'Compra o produto, Exemplo: "!r comprar Poderoso bico-madeira"'
+			"comprar [nome do produto]",
+			'Compra o produto, Exemplo: "!r comprar bico-madeira"'
 		);
 	message.reply(embed);
 };
