@@ -97,9 +97,14 @@ module.exports = async (message, name, opponentId) => {
 					{ time: 1000 * 60 * 1 }
 				);
 				collector.on("collect", (message) => {
-					resolve(message);
 					collector.stop();
-					return;
+					return resolve(message);
+				});
+				collector.on("end", () => {
+					channel.send(`<@${userId}>, Sala de luta fechada por inatividade!`);
+					channelFight.delete();
+					collector.stop();
+					return resolve(undefined);
 				});
 			});
 		};
