@@ -26,8 +26,8 @@ module.exports = async (message) => {
 			)
 			.addField(
 				"Inventário",
-				console.log(
-					user.inventory.map(async (item) => {
+				JSON.stringify(
+					await user.inventory.map(async (item) => {
 						const product = await Product.findById(item._product).lean();
 
 						if (item._material) {
