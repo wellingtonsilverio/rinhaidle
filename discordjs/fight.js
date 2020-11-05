@@ -100,11 +100,15 @@ module.exports = async (message, name, opponentId) => {
 					collector.stop();
 					return resolve(_message);
 				});
-				collector.on("dispose", (_message) => {
-					console.log("event dispose _message", _message);
-				});
 				collector.on("end", (collected) => {
-					console.log("event end collected", collected);
+					if (!collected || collected === {}) {
+						channel.send(
+							`<@${userId}>, Sala de luta fechada por tempo de inatividade!`
+						);
+						channelFight.delete();
+						collector.stop();
+						return resolve({});
+					}
 				});
 			});
 		};
