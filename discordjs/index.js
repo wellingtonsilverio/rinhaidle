@@ -32,18 +32,20 @@ module.exports = (config) => {
 							const type =
 								commands[3] === "forca" ||
 								commands[3] === "ataque" ||
-								commands[3] === "f"
+								commands[3] === "f" ||
+								commands[3] === "a"
 									? 1
 									: commands[3] === "defesa" ||
 									  commands[3] === "vida" ||
-									  commands[3] === "d"
+									  commands[3] === "d" ||
+									  commands[3] === "v"
 									? 2
 									: 0;
 							if (type !== 0) {
 								require("./training")(msg, commands[2], type);
 							} else {
 								msg.reply(
-									'Treine Força ou Defesa, outro treinamento ainda não é possivel para seu Galo, Exemplo: "!r treinar Poderoso forca"'
+									'Treine Ataque ou Defesa, outro treinamento ainda não é possivel para seu Galo, Exemplo: "!r treinar Poderoso ataque"'
 								);
 							}
 						}

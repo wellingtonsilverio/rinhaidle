@@ -22,13 +22,13 @@ module.exports = async (message) => {
 			.addField("Moedas", user && user.coins ? user.coins : 0)
 			.addField(
 				"Galos",
-				JSON.stringify(roosters.map((rooster) => rooster.name))
+				JSON.stringify(roosters?.map((rooster) => rooster.name) ?? ["Vazio"])
 			)
 			.addField(
 				"Inventário",
 				JSON.stringify(
-					await Promise.all(
-						user.inventory.map(async (item) => {
+					(await Promise.all(
+						user?.inventory?.map(async (item) => {
 							const product = await Product.findById(item._product).lean();
 
 							if (item._material) {
@@ -37,8 +37,8 @@ module.exports = async (message) => {
 							}
 
 							return product.name;
-						})
-					)
+						}) ?? ["Vazio"]
+					)) ?? ["Vazio"]
 				)
 			);
 		message.reply(embed);
