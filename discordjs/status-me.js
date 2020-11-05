@@ -22,7 +22,7 @@ module.exports = async (message) => {
 			.addField("Moedas", user && user.coins ? user.coins : 0)
 			.addField(
 				"Galos",
-				JSON.stringify(roosters?.map((rooster) => rooster.name) ?? ["Vazio"])
+				JSON.stringify(roosters?.map((rooster) => rooster.name) ?? [""])
 			)
 			.addField(
 				"Inventário",
@@ -37,8 +37,8 @@ module.exports = async (message) => {
 							}
 
 							return product.name;
-						}) ?? ["Vazio"]
-					)) ?? ["Vazio"]
+						}) ?? [""]
+					)) ?? [""]
 				)
 			);
 		message.reply(embed);
