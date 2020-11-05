@@ -96,15 +96,15 @@ module.exports = async (message, name, opponentId) => {
 					(m) => m.author.id === userId,
 					{ time: 1000 * 60 * 1 }
 				);
-				collector.on("collect", (message) => {
+				collector.on("collect", (_message) => {
 					collector.stop();
-					return resolve(message);
+					return resolve(_message);
 				});
-				collector.on("end", () => {
-					channel.send(`<@${userId}>, Sala de luta fechada por inatividade!`);
-					channelFight.delete();
-					collector.stop();
-					return resolve(undefined);
+				collector.on("dispose", (_message) => {
+					console.log("event dispose _message", _message);
+				});
+				collector.on("end", (collected) => {
+					console.log("event end collected", collected);
 				});
 			});
 		};
