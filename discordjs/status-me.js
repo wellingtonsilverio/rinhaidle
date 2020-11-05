@@ -1,6 +1,8 @@
 const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
 const User = require("../models/User");
+const Product = require("../models/Product");
+const Material = require("../models/Material");
 
 module.exports = async (message) => {
 	const userId = message.author.id;
@@ -21,6 +23,19 @@ module.exports = async (message) => {
 			.addField(
 				"Galos",
 				JSON.stringify(roosters.map((rooster) => rooster.name))
+			)
+			.addField(
+				"Inventário",
+				JSON.stringify(user.inventory.map((item) => {
+					const product = await Product.findById(item._product).lean();
+
+					if (item._material) {
+						const material = await Material.findById(item._material).lean();
+						return `${product.name} de ${material.name}`;
+					}
+
+					return product.name;
+				}))
 			);
 		message.reply(embed);
 	} catch (ex) {
