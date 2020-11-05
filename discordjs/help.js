@@ -12,7 +12,7 @@ module.exports = (message) => {
 			'Cria um novo galo, Exemplo: "!r chocar Poderoso"'
 		)
 		.addField(
-			"treinar [nome do galo] forca",
+			"treinar [nome do galo] ataque",
 			'Treina o galo para adquirir mais força, Exemplo: "!r treinar Poderoso forca"'
 		)
 		.addField(

@@ -155,15 +155,28 @@ module.exports = async (message, name, opponentId) => {
 				);
 
 				if (messageOponent1.content == "a") {
-					oponents[i % 2].rooster.constitution += -oponents[(i + 1) % 2].rooster
-						.strength;
-					channelFight.send(
-						`${oponents[i % 2].rooster.name} está com ${
-							oponents[i % 2].rooster.constitution
-						} de vida`
-					);
+					const critical = Math.random();
+					if (critical > 0.7) {
+						oponents[i % 2].rooster.constitution += -(
+							oponents[(i + 1) % 2].rooster.strength * 2
+						);
+						channelFight.send(
+							`**DANO CRÍTICO**\n${oponents[i % 2].rooster.name} está com ${
+								oponents[i % 2].rooster.constitution
+							} de vida`
+						);
+					} else {
+						oponents[i % 2].rooster.constitution += -oponents[(i + 1) % 2]
+							.rooster.strength;
+						channelFight.send(
+							`${oponents[i % 2].rooster.name} está com ${
+								oponents[i % 2].rooster.constitution
+							} de vida`
+						);
+					}
 				} else if (messageOponent1.content == "d") {
-					const gain = oponents[(i + 1) % 2].rooster.constitution * 0.01;
+					const gain =
+						oponents[(i + 1) % 2].rooster.constitution * (Math.random() * 0.1);
 					oponents[(i + 1) % 2].rooster.constitution += gain;
 					channelFight.send(
 						`${oponents[(i + 1) % 2].rooster.name} ganhou ${gain} de vida`
@@ -174,7 +187,6 @@ module.exports = async (message, name, opponentId) => {
 					require("./addCoins")(oponents[(i + 1) % 2].id);
 					channel.send(`<@${oponents[(i + 1) % 2].id}> Venceu!`);
 					channelFight.delete();
-					i = 0;
 					return;
 				}
 
