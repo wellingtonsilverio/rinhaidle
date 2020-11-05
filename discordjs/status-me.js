@@ -26,15 +26,12 @@ module.exports = async (message) => {
 			)
 			.addField(
 				"Inventário",
-				JSON.stringify(
+				console.log(
 					user.inventory.map(async (item) => {
-						console.log("item", item);
 						const product = await Product.findById(item._product).lean();
-						console.log("product", product);
 
 						if (item._material) {
 							const material = await Material.findById(item._material).lean();
-							console.log("material", material);
 							return `${product.name} de ${material.name}`;
 						}
 
