@@ -26,16 +26,18 @@ module.exports = async (message) => {
 			)
 			.addField(
 				"Inventário",
-				JSON.stringify(user.inventory.map((item) => {
-					const product = await Product.findById(item._product).lean();
+				JSON.stringify(
+					user.inventory.map(async (item) => {
+						const product = await Product.findById(item._product).lean();
 
-					if (item._material) {
-						const material = await Material.findById(item._material).lean();
-						return `${product.name} de ${material.name}`;
-					}
+						if (item._material) {
+							const material = await Material.findById(item._material).lean();
+							return `${product.name} de ${material.name}`;
+						}
 
-					return product.name;
-				}))
+						return product.name;
+					})
+				)
 			);
 		message.reply(embed);
 	} catch (ex) {
