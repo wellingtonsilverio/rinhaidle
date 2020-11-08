@@ -4,6 +4,7 @@ const Rooster = require("../models/Rooster");
 const User = require("../models/User");
 
 module.exports = async (message, name, _productName) => {
+	console.log("entrou useItem", name, _productName);
 	const userId = message.author.id;
 	const [productName, productMaterial] = _productName.split("-");
 
@@ -17,8 +18,10 @@ module.exports = async (message, name, _productName) => {
 
 		if (product) {
 			if (product.type === "food") {
+				console.log("food");
 				user.inventory.map(async (_item) => {
 					if (_item._product == product._id) {
+						console.log("_item", _item);
 						rooster.stamina += product.bonus.stamina;
 						_item = undefined;
 
