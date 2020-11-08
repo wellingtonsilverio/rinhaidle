@@ -23,9 +23,11 @@ module.exports = async (message, name, _productName) => {
 					console.log(
 						"_item._product product._id",
 						_item._product,
-						product._id
+						product._id,
+						_item._product === product._id
 					);
 					if (_item._product === product._id) {
+						console.log("entrou");
 						rooster.stamina += product.bonus.stamina;
 						_item = undefined;
 
