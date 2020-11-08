@@ -8,6 +8,7 @@ module.exports = async (message, name, _productName) => {
 	const [productName, productMaterial] = _productName.split("-");
 
 	try {
+		const user = await User.findOne({ discordId: userId });
 		const product = await Product.findOne({ ext: productName }).lean();
 		const rooster = await Rooster.findOne({
 			discordId: userId,
@@ -16,16 +17,20 @@ module.exports = async (message, name, _productName) => {
 
 		if (product) {
 			if (product.type === "food") {
-				rooster.stamina += product.bonus.stamina;
+				user.inventory.map(async (_item) => {
+					if (_item._product == product._id) {
+						rooster.stamina += product.bonus.stamina;
+						_item = undefined;
 
-				await rooster.save();
+						await rooster.save();
+						await user.save();
 
-				message.reply(`O galo ${rooster.name} usou ${product.name}`);
+						message.reply(`O galo ${rooster.name} usou ${product.name}`);
 
-				return;
+						return;
+					}
+				});
 			} else {
-				const user = await User.findOne({ discordId: userId });
-
 				if (productMaterial) {
 					const material = await Material.findOne({
 						ext: productMaterial,
@@ -45,6 +50,10 @@ module.exports = async (message, name, _productName) => {
 							await rooster.save();
 							await user.save();
 
+							message.reply(
+								`O galo ${rooster.name} equipou ${product.name} de ${material.name}`
+							);
+
 							return;
 						}
 					});
@@ -58,6 +67,8 @@ module.exports = async (message, name, _productName) => {
 
 							await rooster.save();
 							await user.save();
+
+							message.reply(`O galo ${rooster.name} equipou ${product.name}`);
 
 							return;
 						}
