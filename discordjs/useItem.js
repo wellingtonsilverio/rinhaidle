@@ -20,8 +20,12 @@ module.exports = async (message, name, _productName) => {
 			if (product.type === "food") {
 				console.log("food");
 				user.inventory.map(async (_item) => {
-					if (_item._product == product._id) {
-						console.log("_item", _item);
+					console.log(
+						"_item._product product._id",
+						_item._product,
+						product._id
+					);
+					if (_item._product === product._id) {
 						rooster.stamina += product.bonus.stamina;
 						_item = undefined;
 
