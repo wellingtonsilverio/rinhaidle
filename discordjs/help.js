@@ -38,6 +38,14 @@ module.exports = (message) => {
 		.addField(
 			"comprar [nome do produto]",
 			'Compra o produto, Exemplo: "!r comprar bico-madeira"'
+		)
+		.addField(
+			"usar [nome do galo] [nome do produto]",
+			'Equipa ou usa um item que está no inventário, Exemplo: "!r usar Poderoso bico-madeira"'
+		)
+		.addField(
+			"remover [nome do galo] [nome do produto]",
+			'Remover um item que está no Galo, Exemplo: "!r remover Poderoso bico-madeira"'
 		);
 	message.reply(embed);
 };

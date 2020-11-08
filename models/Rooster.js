@@ -17,6 +17,15 @@ const RoosterSchema = new Schema({
 		type: { type: Number, required: false },
 		init: { type: Date, required: false },
 	},
+	equipments: {
+		type: [
+			{
+				_product: { type: Types.ObjectId, ref: "Product" },
+				_material: { type: Types.ObjectId, ref: "Material" },
+			},
+		],
+		default: [],
+	},
 });
 
 module.exports = mongoose.model("Rooster", RoosterSchema);

@@ -16,7 +16,8 @@ module.exports = (config) => {
 			// msg.delete();
 			const commands = msg.content.split(" ");
 			switch (commands[1]) {
-				case "help" || "ajuda":
+				case "ajuda":
+				case "help":
 					require("./help")(msg);
 					break;
 
@@ -80,6 +81,28 @@ module.exports = (config) => {
 						require("./buy-product")(msg, commands[2]);
 					} else {
 						require("./products")(msg);
+					}
+					break;
+
+				case "usar":
+					if (
+						commands[2] &&
+						commands[2] != "" &&
+						commands[3] &&
+						commands[3] != ""
+					) {
+						require("./useItem")(msg, commands[2], commands[3]);
+					}
+					break;
+
+				case "remover":
+					if (
+						commands[2] &&
+						commands[2] != "" &&
+						commands[3] &&
+						commands[3] != ""
+					) {
+						require("./removeItem")(msg, commands[2], commands[3]);
 					}
 					break;
 

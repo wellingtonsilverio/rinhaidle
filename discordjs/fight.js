@@ -94,7 +94,7 @@ module.exports = async (message, name, opponentId) => {
 				const collector = new Discordjs.MessageCollector(
 					channel,
 					(m) => m.author.id === userId,
-					{ time: 1000 * 60 * 1 }
+					{ time: 1000 * 60 * 5 }
 				);
 				collector.on("collect", (_message) => {
 					collector.stop();
