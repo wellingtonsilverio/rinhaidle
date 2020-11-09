@@ -15,10 +15,11 @@ module.exports = async (message, name, _productName) => {
 			name: name,
 		});
 
-		for (let item of user.inventory) {
+		for (const item of user.inventory) {
 			if (String(item._product) === String(product._id)) {
 				if (product.type === "food") {
 					rooster.stamina += product.bonus.stamina;
+					console.log("item", item);
 					item = undefined;
 
 					await rooster.save();
