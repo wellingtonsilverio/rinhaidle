@@ -23,8 +23,11 @@ module.exports = async (message, name, _productName) => {
 							rooster.stamina += product.bonus.stamina;
 							_item = undefined;
 
-							await rooster.save();
-							await user.save();
+							console.log("rooster", rooster);
+							console.log("user", user);
+
+							// await rooster.save();
+							// await user.save();
 
 							message.reply(`O galo ${rooster.name} usou ${product.name}`);
 						};
