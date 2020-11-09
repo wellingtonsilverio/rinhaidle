@@ -4,7 +4,6 @@ const Rooster = require("../models/Rooster");
 const User = require("../models/User");
 
 module.exports = async (message, name, _productName) => {
-	console.log("entrou useItem", name, _productName);
 	const userId = message.author.id;
 	const [productName, productMaterial] = _productName.split("-");
 
@@ -18,24 +17,18 @@ module.exports = async (message, name, _productName) => {
 
 		if (product) {
 			if (product.type === "food") {
-				console.log("food");
-				user.inventory.map(async (_item) => {
-					console.log(
-						"_item._product product._id",
-						_item._product,
-						product._id,
-						_item._product == product._id,
-						String(_item._product) === String(product._id)
-					);
+				user.inventory.map((_item) => {
 					if (String(_item._product) === String(product._id)) {
-						console.log("entrou");
-						rooster.stamina += product.bonus.stamina;
-						_item = undefined;
+						const update = async () => {
+							rooster.stamina += product.bonus.stamina;
+							_item = undefined;
 
-						await rooster.save();
-						await user.save();
+							await rooster.save();
+							await user.save();
 
-						message.reply(`O galo ${rooster.name} usou ${product.name}`);
+							message.reply(`O galo ${rooster.name} usou ${product.name}`);
+						};
+						update();
 
 						return;
 					}
@@ -46,39 +39,47 @@ module.exports = async (message, name, _productName) => {
 						ext: productMaterial,
 					}).lean();
 
-					user.inventory.map(async (_item) => {
+					user.inventory.map((_item) => {
 						if (
-							_item._product === product._id &&
-							_item._material === material._id
+							String(_item._product) === String(product._id) &&
+							String(_item._material) === String(material._id)
 						) {
-							rooster.equipments.push({
-								_product: _item._product,
-								_material: _item._material,
-							});
-							_item = undefined;
+							const update = async () => {
+								rooster.equipments.push({
+									_product: _item._product,
+									_material: _item._material,
+								});
+								_item = undefined;
 
-							await rooster.save();
-							await user.save();
+								await rooster.save();
+								await user.save();
 
-							message.reply(
-								`O galo ${rooster.name} equipou ${product.name} de ${material.name}`
-							);
+								message.reply(
+									`O galo ${rooster.name} equipou ${product.name} de ${material.name}`
+								);
+							};
+
+							update();
 
 							return;
 						}
 					});
 				} else {
 					user.inventory.map(async (_item) => {
-						if (_item._product === product._id) {
-							rooster.equipments.push({
-								_product: _item._product,
-							});
-							_item = undefined;
+						if (String(_item._product) === String(product._id)) {
+							const update = async () => {
+								rooster.equipments.push({
+									_product: _item._product,
+								});
+								_item = undefined;
 
-							await rooster.save();
-							await user.save();
+								await rooster.save();
+								await user.save();
 
-							message.reply(`O galo ${rooster.name} equipou ${product.name}`);
+								message.reply(`O galo ${rooster.name} equipou ${product.name}`);
+							};
+
+							update();
 
 							return;
 						}
@@ -86,5 +87,8 @@ module.exports = async (message, name, _productName) => {
 				}
 			}
 		}
-	} catch (error) {}
+	} catch (ex) {
+		channel.send(`<@${userId}> Aconteceu um erro ao usar o item!`);
+		console.log("try error useItem: ", ex);
+	}
 };
