@@ -24,7 +24,7 @@ module.exports = async (message, name, _productName) => {
 					);
 					await User.updateOne(
 						{ discordId: userId },
-						{ $pull: { _id: [item._id] } }
+						{ inventory: { $pull: { _id: [item._id] } } }
 					);
 
 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
@@ -110,7 +110,7 @@ module.exports = async (message, name, _productName) => {
 		// 	}
 		// }
 	} catch (ex) {
-		message.reply(`<@${userId}> Aconteceu um erro ao usar o item!`);
+		message.reply(`Aconteceu um erro ao usar o item!`);
 		console.log("try error useItem: ", ex);
 	}
 };
