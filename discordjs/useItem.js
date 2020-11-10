@@ -19,15 +19,16 @@ module.exports = async (message, name, _productName) => {
 			if (String(item._product) === String(product._id)) {
 				if (product.type === "food") {
 					rooster.stamina += product.bonus.stamina;
-					console.log("item", item);
-					item = undefined;
 
 					await rooster.save();
-					await user.save();
+					await User.updateOne(
+						{ discordId: userId },
+						{ $pull: { _id: [item._id] } }
+					);
 
 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
 
-					break;
+					return;
 				}
 			}
 		}
