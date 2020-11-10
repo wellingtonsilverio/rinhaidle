@@ -18,9 +18,10 @@ module.exports = async (message, name, _productName) => {
 		for (const item of user.inventory) {
 			if (String(item._product) === String(product._id)) {
 				if (product.type === "food") {
-					rooster.stamina += product.bonus.stamina;
-
-					await rooster.save();
+					await rooster.updateOne(
+						{ discordId: userId, name: name },
+						{ $inc: { stamina: product.bonus.stamina } }
+					);
 					await User.updateOne(
 						{ discordId: userId },
 						{ $pull: { _id: [item._id] } }
@@ -109,7 +110,7 @@ module.exports = async (message, name, _productName) => {
 		// 	}
 		// }
 	} catch (ex) {
-		channel.send(`<@${userId}> Aconteceu um erro ao usar o item!`);
+		message.reply(`<@${userId}> Aconteceu um erro ao usar o item!`);
 		console.log("try error useItem: ", ex);
 	}
 };
