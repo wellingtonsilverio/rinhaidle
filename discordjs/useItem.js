@@ -16,7 +16,7 @@ module.exports = async (message, name, _productName) => {
 		});
 
 		let found = false;
-		user.inventory.map((item) => {
+		user.inventory = user.inventory.map((item) => {
 			if (found) return item;
 
 			if (String(item._product) === String(product._id)) {
