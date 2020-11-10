@@ -15,28 +15,24 @@ module.exports = async (message, name, _productName) => {
 			name: name,
 		});
 
-		for (const item of user.inventory) {
+		let found = false;
+		user.inventory.map((item) => {
+			if (found) return item;
+
 			if (String(item._product) === String(product._id)) {
 				if (product.type === "food") {
 					rooster.stamina += product.bonus.stamina;
 
-					user.subdocs.pull({ _id: item._id });
-
-					// await rooster.updateOne(
-					// 	{ discordId: userId, name: name },
-					// 	{ $inc: { stamina: product.bonus.stamina } }
-					// );
-					// await User.updateOne(
-					// 	{ discordId: userId },
-					// 	{ inventory: { $pullAll: { _id: [item._id] } } }
-					// );
-
 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
 
-					break;
+					found = true;
+
+					return undefined;
 				}
 			}
-		}
+
+			return item;
+		});
 
 		await rooster.save();
 		await user.save();
