@@ -29,6 +29,9 @@ module.exports = async (message) => {
 				JSON.stringify(
 					(await Promise.all(
 						user?.inventory?.map(async (item) => {
+							console.log("item", item);
+							if (!item) return;
+
 							const product = await Product.findById(item._product).lean();
 
 							if (item._material) {
