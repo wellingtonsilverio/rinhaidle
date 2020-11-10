@@ -18,21 +18,28 @@ module.exports = async (message, name, _productName) => {
 		for (const item of user.inventory) {
 			if (String(item._product) === String(product._id)) {
 				if (product.type === "food") {
-					await rooster.updateOne(
-						{ discordId: userId, name: name },
-						{ $inc: { stamina: product.bonus.stamina } }
-					);
-					await User.updateOne(
-						{ discordId: userId },
-						{ inventory: { $pullAll: { _id: [item._id] } } }
-					);
+					rooster.stamina += product.bonus.stamina;
+
+					user.subdocs.pull({ _id: item._id });
+
+					// await rooster.updateOne(
+					// 	{ discordId: userId, name: name },
+					// 	{ $inc: { stamina: product.bonus.stamina } }
+					// );
+					// await User.updateOne(
+					// 	{ discordId: userId },
+					// 	{ inventory: { $pullAll: { _id: [item._id] } } }
+					// );
 
 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
 
-					return;
+					break;
 				}
 			}
 		}
+
+		await rooster.save();
+		await user.save();
 
 		// if (product) {
 		// 	if (product.type === "food") {
