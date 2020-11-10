@@ -24,7 +24,7 @@ module.exports = async (message, name, _productName) => {
 					);
 					await User.updateOne(
 						{ discordId: userId },
-						{ inventory: { $pull: { _id: [item._id] } } }
+						{ inventory: { $pullAll: { _id: [item._id] } } }
 					);
 
 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
