@@ -34,6 +34,8 @@ module.exports = async (message, name, _productName) => {
 			return item;
 		});
 
+		console.log("user", user);
+
 		await rooster.save();
 		await user.save();
 
