@@ -16,104 +16,28 @@ module.exports = async (message, name, _productName) => {
 		});
 
 		let found = false;
-		user.inventory = user.inventory.map((item) => {
-			if (found) return item;
+		user.inventory = user.inventory
+			.map((item) => {
+				if (found) return item;
 
-			if (String(item._product) === String(product._id)) {
-				if (product.type === "food") {
-					rooster.stamina += product.bonus.stamina;
+				if (String(item._product) === String(product._id)) {
+					if (product.type === "food") {
+						rooster.stamina += product.bonus.stamina;
 
-					message.reply(`O galo ${rooster.name} usou ${product.name}`);
+						message.reply(`O galo ${rooster.name} usou ${product.name}`);
 
-					found = true;
+						found = true;
 
-					return undefined;
+						return undefined;
+					}
 				}
-			}
 
-			return item;
-		});
-
-		console.log("user", user);
+				return item;
+			})
+			.filter((item) => item !== undefined);
 
 		await rooster.save();
 		await user.save();
-
-		// if (product) {
-		// 	if (product.type === "food") {
-		// 		user.inventory.map((_item) => {
-		// 			if (String(_item._product) === String(product._id)) {
-		// 				const update = async () => {
-		// 					rooster.stamina += product.bonus.stamina;
-		// 					_item = undefined;
-
-		// 					console.log("rooster", rooster);
-		// 					console.log("user", user);
-
-		// 					// await rooster.save();
-		// 					// await user.save();
-
-		// 					message.reply(`O galo ${rooster.name} usou ${product.name}`);
-		// 				};
-		// 				update();
-
-		// 				return;
-		// 			}
-		// 		});
-		// 	} else {
-		// 		if (productMaterial) {
-		// 			const material = await Material.findOne({
-		// 				ext: productMaterial,
-		// 			}).lean();
-
-		// 			user.inventory.map((_item) => {
-		// 				if (
-		// 					String(_item._product) === String(product._id) &&
-		// 					String(_item._material) === String(material._id)
-		// 				) {
-		// 					const update = async () => {
-		// 						rooster.equipments.push({
-		// 							_product: _item._product,
-		// 							_material: _item._material,
-		// 						});
-		// 						_item = undefined;
-
-		// 						await rooster.save();
-		// 						await user.save();
-
-		// 						message.reply(
-		// 							`O galo ${rooster.name} equipou ${product.name} de ${material.name}`
-		// 						);
-		// 					};
-
-		// 					update();
-
-		// 					return;
-		// 				}
-		// 			});
-		// 		} else {
-		// 			user.inventory.map(async (_item) => {
-		// 				if (String(_item._product) === String(product._id)) {
-		// 					const update = async () => {
-		// 						rooster.equipments.push({
-		// 							_product: _item._product,
-		// 						});
-		// 						_item = undefined;
-
-		// 						await rooster.save();
-		// 						await user.save();
-
-		// 						message.reply(`O galo ${rooster.name} equipou ${product.name}`);
-		// 					};
-
-		// 					update();
-
-		// 					return;
-		// 				}
-		// 			});
-		// 		}
-		// 	}
-		// }
 	} catch (ex) {
 		message.reply(`Aconteceu um erro ao usar o item!`);
 		console.log("try error useItem: ", ex);
