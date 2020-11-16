@@ -84,6 +84,7 @@ module.exports = (config) => {
 					}
 					break;
 
+				case "equipar":
 				case "usar":
 					if (
 						commands[2] &&

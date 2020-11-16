@@ -8,6 +8,12 @@ module.exports = async (message, name) => {
 	const buy = async (value, _product, _material) => {
 		const user = await User.findOne({ discordId: userId });
 
+		if (user.coins < value) {
+			message.reply("Dinheiro insuficiente!");
+
+			return;
+		}
+
 		user.inventory.push({
 			_product,
 			...(_material ? { _material } : {}),
@@ -17,6 +23,8 @@ module.exports = async (message, name) => {
 		await user.save();
 
 		message.reply("Compra feita com sucesso!");
+
+		return;
 	};
 
 	try {
