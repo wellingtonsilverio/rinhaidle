@@ -36,10 +36,10 @@ module.exports = async (message) => {
 
 							if (item._material) {
 								const material = await Material.findById(item._material).lean();
-								return `${product.name} de ${material.name}`;
+								return `${product.ext}-${material.ext}`;
 							}
 
-							return product.name;
+							return product.ext;
 						}) ?? [""]
 					)) ?? [""]
 				)
