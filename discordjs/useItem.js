@@ -9,7 +9,8 @@ module.exports = async (message, name, _productName) => {
 
 	try {
 		const user = await User.findOne({ discordId: userId });
-		const product = await Product.findOne({ ext: productName }).lean();
+        const product = await Product.findOne({ ext: productName }).lean();
+        const material = productMaterial ? await Material.findOne({ ext: productMaterial }).lean() : undefined;
 		const rooster = await Rooster.findOne({
 			discordId: userId,
 			name: name,
@@ -29,7 +30,25 @@ module.exports = async (message, name, _productName) => {
 						found = true;
 
 						return undefined;
-					}
+                    }
+                    
+                    if (product.type === "equipment") {
+                        if (!rooster.equipments) {
+                            rooster.equipments = [];
+                        }
+                        if (material) {
+                            if (String(item._material) !== String(material._id)) {
+                                return item;
+                            }
+                        }
+                        rooster.equipments.push(item);
+
+                        message.reply(`O galo ${rooster.name} equipou ${product.name} de ${material.name}`);
+
+                        found = true;
+
+						return undefined;
+                    }
 				}
 
 				return item;
