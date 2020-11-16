@@ -27,7 +27,7 @@ module.exports = async (message, name) => {
 
 							if (item._material) {
 								const material = await Material.findById(item._material).lean();
-								return `${product.ext} de ${material.ext}`;
+								return `${product.ext}-${material.ext}`;
 							}
 
 							return product.ext;
