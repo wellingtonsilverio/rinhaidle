@@ -1,5 +1,7 @@
 const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
+const Product = require("../models/Product");
+const Material = require("../models/Material");
 
 module.exports = async (message, name) => {
 	const userId = message.author.id;
@@ -21,9 +23,7 @@ module.exports = async (message, name) => {
 				JSON.stringify(
 					(await Promise.all(
 						rooster?.equipments?.map(async (item) => {
-							console.log("item", item);
 							const product = await Product.findById(item._product).lean();
-							console.log("product", product);
 
 							if (item._material) {
 								const material = await Material.findById(item._material).lean();
