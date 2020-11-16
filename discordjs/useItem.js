@@ -43,6 +43,8 @@ module.exports = async (message, name, _productName) => {
                         }
                         rooster.equipments.push(item);
 
+                        message.reply(`O galo ${rooster.name} equipou ${product.name} de ${material.name}`);
+
                         found = true;
 
 						return undefined;
