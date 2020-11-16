@@ -126,7 +126,7 @@ module.exports = async (message, name, opponentId) => {
 
 			try {
 				require("./get-stamina")(opponent.discordId, opponent.name).then(
-					(staminaOpponent) => {
+					async (staminaOpponent) => {
 						if (staminaOpponent < 10) {
 							channelFight.send(
 								`<@${opponentId}>, Este Galo está casando, tente outro!`
@@ -139,61 +139,85 @@ module.exports = async (message, name, opponentId) => {
 							);
 							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
 
-							await Promise.all(rooster.equipments.map(async(equipment) => {
-								if (equipment._product) {
-									const product = await Product.findById(equipment._product).lean();
+							await Promise.all(
+								rooster.equipments.map(async (equipment) => {
+									if (equipment._product) {
+										const product = await Product.findById(
+											equipment._product
+										).lean();
 
-									if (equipment._material) {
-										const material = await Material.findById(equipment._material).lean();
+										if (equipment._material) {
+											const material = await Material.findById(
+												equipment._material
+											).lean();
+
+											if (product.bonus) {
+												if (product.bonus.constitution) {
+													rooster.constitution +=
+														rooster.constitution *
+														(product.bonus.constitution * material.multiplier);
+												}
+												if (product.bonus.strength) {
+													rooster.strength +=
+														rooster.strength *
+														(product.bonus.strength * material.multiplier);
+												}
+											}
+										}
 
 										if (product.bonus) {
 											if (product.bonus.constitution) {
-												rooster.constitution += rooster.constitution * (product.bonus.constitution * material.multiplier);
+												rooster.constitution +=
+													rooster.constitution * product.bonus.constitution;
 											}
 											if (product.bonus.strength) {
-												rooster.strength += rooster.strength * (product.bonus.strength * material.multiplier);
+												rooster.strength +=
+													rooster.strength * product.bonus.strength;
 											}
 										}
 									}
+								})
+							);
 
-									if (product.bonus) {
-										if (product.bonus.constitution) {
-											rooster.constitution += rooster.constitution * product.bonus.constitution;
+							await Promise.all(
+								opponent.equipments.map(async (equipment) => {
+									if (equipment._product) {
+										const product = await Product.findById(
+											equipment._product
+										).lean();
+
+										if (equipment._material) {
+											const material = await Material.findById(
+												equipment._material
+											).lean();
+
+											if (product.bonus) {
+												if (product.bonus.constitution) {
+													opponent.constitution +=
+														opponent.constitution *
+														(product.bonus.constitution * material.multiplier);
+												}
+												if (product.bonus.strength) {
+													opponent.strength +=
+														opponent.strength *
+														(product.bonus.strength * material.multiplier);
+												}
+											}
 										}
-										if (product.bonus.strength) {
-											rooster.strength += rooster.strength * product.bonus.strength;
-										}
-									}
-								}
-							}));
-
-							await Promise.all(opponent.equipments.map(async(equipment) => {
-								if (equipment._product) {
-									const product = await Product.findById(equipment._product).lean();
-
-									if (equipment._material) {
-										const material = await Material.findById(equipment._material).lean();
 
 										if (product.bonus) {
 											if (product.bonus.constitution) {
-												opponent.constitution += opponent.constitution * (product.bonus.constitution * material.multiplier);
+												opponent.constitution +=
+													opponent.constitution * product.bonus.constitution;
 											}
 											if (product.bonus.strength) {
-												opponent.strength += opponent.strength * (product.bonus.strength * material.multiplier);
+												opponent.strength +=
+													opponent.strength * product.bonus.strength;
 											}
 										}
 									}
-
-									if (product.bonus) {
-										if (product.bonus.constitution) {
-											opponent.constitution += opponent.constitution * product.bonus.constitution;
-										}
-										if (product.bonus.strength) {
-											opponent.strength += opponent.strength * product.bonus.strength;
-										}
-									}
-								}
-							}));
+								})
+							);
 
 							fight(
 								{ id: userId, rooster: rooster },
