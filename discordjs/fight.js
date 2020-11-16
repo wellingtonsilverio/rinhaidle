@@ -1,5 +1,7 @@
 const Discordjs = require("discord.js");
 const Rooster = require("../models/Rooster");
+const Product = require("../models/Product");
+const Material = require("../models/Material");
 
 module.exports = async (message, name, opponentId) => {
 	const channel = message.channel;
@@ -136,6 +138,34 @@ module.exports = async (message, name, opponentId) => {
 								`<@${userId}> e <@${opponentId}>: preparem-se!`
 							);
 							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
+
+							await Promise.all(rooster.equipments.map(async(equipment) => {
+								if (equipment._product) {
+									const product = await Product.findById(equipment._product).lean();
+
+									if (equipment._material) {
+										const material = await Material.findById(equipment._material).lean();
+
+										if (product.bonus) {
+											if (product.bonus.constitution) {
+												rooster.constitution += rooster.constitution * (product.bonus.constitution * material.multiplier);
+											}
+											if (product.bonus.strength) {
+												rooster.strength += rooster.strength * (product.bonus.strength * material.multiplier);
+											}
+										}
+									}
+
+									if (product.bonus) {
+										if (product.bonus.constitution) {
+											rooster.constitution += rooster.constitution * product.bonus.constitution;
+										}
+										if (product.bonus.strength) {
+											rooster.strength += rooster.strength * product.bonus.strength;
+										}
+									}
+								}
+							}));
 
 							fight(
 								{ id: userId, rooster: rooster },
