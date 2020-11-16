@@ -32,6 +32,9 @@ module.exports = async (message, name, _productName) => {
                     }
                     
                     if (product.type === "equipment") {
+                        if (!rooster.equipments) {
+                            rooster.equipments = [];
+                        }
                         rooster.equipments.push(item);
 
                         found = true;
