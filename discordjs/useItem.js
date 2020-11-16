@@ -9,7 +9,8 @@ module.exports = async (message, name, _productName) => {
 
 	try {
 		const user = await User.findOne({ discordId: userId });
-		const product = await Product.findOne({ ext: productName }).lean();
+        const product = await Product.findOne({ ext: productName }).lean();
+        const material = productMaterial ? await Material.findOne({ ext: productMaterial }).lean() : undefined;
 		const rooster = await Rooster.findOne({
 			discordId: userId,
 			name: name,
@@ -35,9 +36,7 @@ module.exports = async (message, name, _productName) => {
                         if (!rooster.equipments) {
                             rooster.equipments = [];
                         }
-                        if (productMaterial) {
-                            const material = await Material.findOne({ ext: productMaterial }).lean();
-
+                        if (material) {
                             if (String(item._material) !== String(material._id)) {
                                 return item;
                             }
