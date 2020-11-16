@@ -35,6 +35,13 @@ module.exports = async (message, name, _productName) => {
                         if (!rooster.equipments) {
                             rooster.equipments = [];
                         }
+                        if (productMaterial) {
+                            const material = await Material.findOne({ ext: productMaterial }).lean();
+
+                            if (String(item._material) !== String(material._id)) {
+                                return item;
+                            }
+                        }
                         rooster.equipments.push(item);
 
                         found = true;
