@@ -29,7 +29,15 @@ module.exports = async (message, name, _productName) => {
 						found = true;
 
 						return undefined;
-					}
+                    }
+                    
+                    if (product.type === "equipment") {
+                        rooster.equipments.push(item);
+
+                        found = true;
+
+						return undefined;
+                    }
 				}
 
 				return item;
