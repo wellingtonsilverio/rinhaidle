@@ -140,7 +140,7 @@ module.exports = async (message, name, opponentId) => {
 							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
 
 							Promise.all(
-								rooster.equipments.map(async (equipment) => {
+								rooster.equipments?.map(async (equipment) => {
 									if (equipment._product) {
 										const product = await Product.findById(
 											equipment._product
@@ -179,7 +179,7 @@ module.exports = async (message, name, opponentId) => {
 								})
 							).then(() => {
 								Promise.all(
-									opponent.equipments.map(async (equipment) => {
+									opponent.equipments?.map(async (equipment) => {
 										if (equipment._product) {
 											const product = await Product.findById(
 												equipment._product
