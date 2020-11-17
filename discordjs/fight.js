@@ -176,7 +176,7 @@ module.exports = async (message, name, opponentId) => {
 											}
 										}
 									}
-								})
+								}) ?? Promise.resolve()
 							).then(() => {
 								Promise.all(
 									opponent.equipments?.map(async (equipment) => {
@@ -216,7 +216,7 @@ module.exports = async (message, name, opponentId) => {
 												}
 											}
 										}
-									})
+									}) ?? Promise.resolve()
 								).then(() => {
 									fight(
 										{ id: userId, rooster: rooster },
