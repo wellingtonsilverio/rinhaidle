@@ -139,47 +139,60 @@ module.exports = async (message, name, opponentId) => {
 							);
 							channelFight.send(`envie 'a' para atacar e 'd' para defender`);
 
-							Promise.all(
-								rooster.equipments?.map(async (equipment) => {
-									if (equipment._product) {
-										const product = await Product.findById(
-											equipment._product
-										).lean();
+							const equipOponent = () => {
+								if (opponent.equipments) {
+									Promise.all(
+										opponent.equipments.map(async (equipment) => {
+											if (equipment._product) {
+												const product = await Product.findById(
+													equipment._product
+												).lean();
 
-										if (equipment._material) {
-											const material = await Material.findById(
-												equipment._material
-											).lean();
+												if (equipment._material) {
+													const material = await Material.findById(
+														equipment._material
+													).lean();
 
-											if (product.bonus) {
-												if (product.bonus.constitution) {
-													rooster.constitution +=
-														rooster.constitution *
-														(product.bonus.constitution * material.multiplier);
+													if (product.bonus) {
+														if (product.bonus.constitution) {
+															opponent.constitution +=
+																opponent.constitution *
+																(product.bonus.constitution *
+																	material.multiplier);
+														}
+														if (product.bonus.strength) {
+															opponent.strength +=
+																opponent.strength *
+																(product.bonus.strength * material.multiplier);
+														}
+													}
 												}
-												if (product.bonus.strength) {
-													rooster.strength +=
-														rooster.strength *
-														(product.bonus.strength * material.multiplier);
+
+												if (product.bonus) {
+													if (product.bonus.constitution) {
+														opponent.constitution +=
+															opponent.constitution *
+															product.bonus.constitution;
+													}
+													if (product.bonus.strength) {
+														opponent.strength +=
+															opponent.strength * product.bonus.strength;
+													}
 												}
 											}
-										}
+										})
+									).then(() => {
+										fight(
+											{ id: userId, rooster: rooster },
+											{ id: opponentId, rooster: opponent }
+										);
+									});
+								}
+							};
 
-										if (product.bonus) {
-											if (product.bonus.constitution) {
-												rooster.constitution +=
-													rooster.constitution * product.bonus.constitution;
-											}
-											if (product.bonus.strength) {
-												rooster.strength +=
-													rooster.strength * product.bonus.strength;
-											}
-										}
-									}
-								}) ?? Promise.resolve()
-							).then(() => {
+							if (rooster.equipments) {
 								Promise.all(
-									opponent.equipments?.map(async (equipment) => {
+									rooster.equipments.map(async (equipment) => {
 										if (equipment._product) {
 											const product = await Product.findById(
 												equipment._product
@@ -192,14 +205,14 @@ module.exports = async (message, name, opponentId) => {
 
 												if (product.bonus) {
 													if (product.bonus.constitution) {
-														opponent.constitution +=
-															opponent.constitution *
+														rooster.constitution +=
+															rooster.constitution *
 															(product.bonus.constitution *
 																material.multiplier);
 													}
 													if (product.bonus.strength) {
-														opponent.strength +=
-															opponent.strength *
+														rooster.strength +=
+															rooster.strength *
 															(product.bonus.strength * material.multiplier);
 													}
 												}
@@ -207,23 +220,22 @@ module.exports = async (message, name, opponentId) => {
 
 											if (product.bonus) {
 												if (product.bonus.constitution) {
-													opponent.constitution +=
-														opponent.constitution * product.bonus.constitution;
+													rooster.constitution +=
+														rooster.constitution * product.bonus.constitution;
 												}
 												if (product.bonus.strength) {
-													opponent.strength +=
-														opponent.strength * product.bonus.strength;
+													rooster.strength +=
+														rooster.strength * product.bonus.strength;
 												}
 											}
 										}
-									}) ?? Promise.resolve()
+									})
 								).then(() => {
-									fight(
-										{ id: userId, rooster: rooster },
-										{ id: opponentId, rooster: opponent }
-									);
+									equipOponent();
 								});
-							});
+							} else {
+								equipOponent();
+							}
 						}
 					}
 				);
