@@ -187,6 +187,11 @@ module.exports = async (message, name, opponentId) => {
 											{ id: opponentId, rooster: opponent }
 										);
 									});
+								} else {
+									fight(
+										{ id: userId, rooster: rooster },
+										{ id: opponentId, rooster: opponent }
+									);
 								}
 							};
 
