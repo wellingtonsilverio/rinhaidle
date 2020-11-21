@@ -107,6 +107,10 @@ module.exports = (config) => {
 					}
 					break;
 
+				case "ranking":
+					require("./ranking")(msg);
+					break;
+
 				default:
 					msg.reply("Oi?");
 					break;

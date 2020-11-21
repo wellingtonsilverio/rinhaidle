@@ -13,6 +13,7 @@ const RoosterSchema = new Schema({
 	strength: { type: Number, required: false, default: 10 },
 	constitution: { type: Number, required: false, default: 10 },
 	stamina: { type: Number, required: false, default: 100 },
+	victoryPoints: { type: Number, required: false, default: 0 },
 	training: {
 		type: { type: Number, required: false },
 		init: { type: Date, required: false },

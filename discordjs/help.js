@@ -46,6 +46,7 @@ module.exports = (message) => {
 		.addField(
 			"remover [nome do galo] [nome do produto]",
 			'Remover um item que está no Galo, Exemplo: "!r remover Poderoso bico-madeira"'
-		);
+		)
+		.addField("ranking", 'Exibe o top 10 Galos, Exemplo: "!r ranking"');
 	message.reply(embed);
 };
