@@ -265,7 +265,7 @@ module.exports = async (message, name, opponentId) => {
 
 				if (messageOponent1.content == "a") {
 					const critical = Math.random();
-					if (critical > 0.7) {
+					if (critical > 0.8) {
 						oponents[i % 2].rooster.constitution += -(
 							oponents[(i + 1) % 2].rooster.strength * 2
 						);
@@ -294,6 +294,7 @@ module.exports = async (message, name, opponentId) => {
 
 				if (oponents[i % 2].rooster.constitution <= 0) {
 					require("./addCoins")(oponents[(i + 1) % 2].id);
+					require("./addVictoryPoints")(oponents[(i + 1) % 2].id);
 					channel.send(`<@${oponents[(i + 1) % 2].id}> Venceu!`);
 					channelFight.delete();
 					return;
