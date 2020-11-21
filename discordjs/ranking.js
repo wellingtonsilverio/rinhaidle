@@ -8,14 +8,13 @@ module.exports = async (message) => {
 			.setColor([203, 153, 126]);
 
 		const roosters = await Rooster.find({
-			victoryPoints: { $gt: 0 },
+			// victoryPoints: { $gt: 0 },
 		}).lean();
 
-		(
-			await roosters.sort((a, b) => {
+		roosters
+			.sort((a, b) => {
 				return a.victoryPoints - b.victoryPoints;
 			})
-		)
 			.slice(0, 10)
 			.map((rooster, index) => {
 				embed.addField(
