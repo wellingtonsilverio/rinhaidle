@@ -8,7 +8,7 @@ module.exports = async (message) => {
 			.setColor([203, 153, 126]);
 
 		const roosters = await Rooster.find({
-			// victoryPoints: { $gt: 0 },
+			victoryPoints: { $gt: 0 },
 		}).lean();
 
 		roosters
