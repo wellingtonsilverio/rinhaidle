@@ -11,10 +11,11 @@ module.exports = async (message) => {
 			victoryPoints: { $gt: 0 },
 		}).lean();
 
-		roosters
-			.sort((a, b) => {
+		(
+			await roosters.sort((a, b) => {
 				return a.victoryPoints - b.victoryPoints;
 			})
+		)
 			.slice(0, 10)
 			.map((rooster, index) => {
 				embed.addField(
@@ -25,6 +26,6 @@ module.exports = async (message) => {
 
 		message.reply(embed);
 	} catch (ex) {
-		console.log("try error recharge: ", ex);
+		console.log("try error ranking: ", ex);
 	}
 };
