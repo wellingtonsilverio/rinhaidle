@@ -291,10 +291,30 @@ module.exports = async (message, name, opponentId) => {
 						`${oponents[(i + 1) % 2].rooster.name} ganhou ${gain} de vida`
 					);
 				}
+				const positivePoints = (points) => {
+					if (points < 0) return 0;
+					return points;
+				};
 
 				if (oponents[i % 2].rooster.constitution <= 0) {
-					require("./addCoins")(oponents[(i + 1) % 2].id);
-					require("./addVictoryPoints")(oponents[(i + 1) % 2].id);
+					const winner =
+						oponents[(i + 1) % 2].constitution +
+						10 * oponents[(i + 1) % 2].strength;
+					const loser =
+						oponents[i % 2].constitution + 10 * oponents[i % 2].strength;
+					const points = 100 + ((loser - winner) / (loser + winner)) * 100;
+					require("./addCoins")(
+						oponents[(i + 1) % 2].id,
+						positivePoints(points * 2)
+					); // winner
+					require("./addCoins")(
+						oponents[i % 2].id,
+						positivePoints(100 - points)
+					); // loser
+					require("./addVictoryPoints")(
+						oponents[(i + 1) % 2].id,
+						positivePoints(points)
+					);
 					channel.send(`<@${oponents[(i + 1) % 2].id}> Venceu!`);
 					channelFight.delete();
 					return;

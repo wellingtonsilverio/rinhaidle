@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-module.exports = async (userId) => {
+module.exports = async (userId, points) => {
 	try {
 		const user = await User.findOne({
 			discordId: userId,
@@ -9,13 +9,13 @@ module.exports = async (userId) => {
 		if (user && user.discordId) {
 			if (!user.victoryPoints) user.victoryPoints = 0;
 
-			user.victoryPoints += 100;
+			user.victoryPoints += points;
 
 			user.save();
 		} else {
 			await User.create({
 				discordId: userId,
-				victoryPoints: 100,
+				victoryPoints: points,
 			});
 		}
 	} catch (ex) {
